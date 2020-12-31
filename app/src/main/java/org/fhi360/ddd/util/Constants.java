@@ -11,4 +11,5 @@ public class Constants {
     public static final String EXTRA_EDIT_MODE = "org.fhi360.ddd.extra.EDIT_MODE";
 
     public static final String PREFERENCES_ENCOUNTER = "org.fhi360.ddd.preferences.ENCOUNTER";
+
 }

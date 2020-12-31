@@ -1,13 +1,20 @@
 package org.fhi360.ddd.util;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -15,7 +22,7 @@ import java.util.Locale;
  */
 
 public class DateUtil {
-    public static Date addYear(Date currentDate, int number){
+    public static Date addYear(Date currentDate, int number) {
         Date date = null;
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
@@ -28,7 +35,7 @@ public class DateUtil {
         return date;
     }
 
-    public static Date addMonth(Date currentDate, int number){
+    public static Date addMonth(Date currentDate, int number) {
         Date date = null;
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
@@ -41,7 +48,7 @@ public class DateUtil {
         return date;
     }
 
-    public static Date addDay(Date currentDate, int number){
+    public static Date addDay(Date currentDate, int number) {
         Date date = null;
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
@@ -57,7 +64,7 @@ public class DateUtil {
     public static int getDay(Date date) {
         Calendar cal = Calendar.getInstance();
         int returnVal = 0;
-        if(date!=null) {
+        if (date != null) {
             cal.setTime(date);
             returnVal = cal.get(Calendar.DAY_OF_YEAR);
         }
@@ -68,9 +75,9 @@ public class DateUtil {
     public static int getMonth(Date date) {
         Calendar cal = Calendar.getInstance();
         int returnVal = 0;
-        if(date!=null) {
+        if (date != null) {
             cal.setTime(date);
-            returnVal =cal.get(Calendar.MONTH);
+            returnVal = cal.get(Calendar.MONTH);
         }
 
 
@@ -81,7 +88,7 @@ public class DateUtil {
 
         Calendar cal = Calendar.getInstance();
         int returnVal = 0;
-        if(date!=null) {
+        if (date != null) {
             cal.setTime(date);
             returnVal = cal.get(Calendar.YEAR);
         }
@@ -89,23 +96,26 @@ public class DateUtil {
         return returnVal;
     }
 
-    public static int getAge(Date date, Date dateRef){
-        int year = getYear(date);
-        int month = getMonth(date);
-        int day = getDay(date);
-        Calendar dob = new GregorianCalendar(year, month - 1, Calendar.DAY_OF_MONTH);
 
-        int yearRef = getYear(dateRef);
-        int monthRef = getMonth(dateRef);
-       // int dayRef = getDay(dateRef);
-        Calendar ref = Calendar.getInstance();
-
-        ref = new GregorianCalendar(yearRef, monthRef - 1, Calendar.DAY_OF_MONTH);
-        int age = ref.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-        if (ref.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+    public static int getAge(String dateOfbirth) throws Exception {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar dob = Calendar.getInstance();
+        dob.setTime(sdf.parse(dateOfbirth));
+        Calendar today = Calendar.getInstance();
+        int curYear = today.get(Calendar.YEAR);
+        int dobYear = dob.get(Calendar.YEAR);
+        int age = curYear - dobYear;
+        int curMonth = today.get(Calendar.MONTH);
+        int dobMonth = dob.get(Calendar.MONTH);
+        if (dobMonth > curMonth) { // this year can't be counted!
             age--;
+        } else if (dobMonth == curMonth) { // same month? check for day
+            int curDay = today.get(Calendar.DAY_OF_MONTH);
+            int dobDay = dob.get(Calendar.DAY_OF_MONTH);
+            if (dobDay > curDay) { // this year can't be counted!
+                age--;
+            }
         }
-        Log.v("OYISCOAGE",  age+"");
 
         return age;
     }
@@ -113,40 +123,40 @@ public class DateUtil {
     public static int getMonth(String month) {
         int number = 0;
         month = month.toUpperCase();
-        if(month.equals("JANUARY")) {
+        if (month.equals("JANUARY")) {
             number = 1;
         }
-        if(month.equals("FEBRUARY")) {
+        if (month.equals("FEBRUARY")) {
             number = 2;
         }
-        if(month.equals("MARCH")) {
+        if (month.equals("MARCH")) {
             number = 3;
         }
-        if(month.equals("APRIL")) {
+        if (month.equals("APRIL")) {
             number = 4;
         }
-        if(month.equals("MAY")) {
+        if (month.equals("MAY")) {
             number = 5;
         }
-        if(month.equals("JUNE")) {
+        if (month.equals("JUNE")) {
             number = 6;
         }
-        if(month.equals("JULY")) {
+        if (month.equals("JULY")) {
             number = 7;
         }
-        if(month.equals("AUGUST")) {
+        if (month.equals("AUGUST")) {
             number = 8;
         }
-        if(month.equals("SEPTEMBER")) {
+        if (month.equals("SEPTEMBER")) {
             number = 9;
         }
-        if(month.equals("OCTOBER")) {
+        if (month.equals("OCTOBER")) {
             number = 10;
         }
-        if(month.equals("NOVEMBER")) {
+        if (month.equals("NOVEMBER")) {
             number = 11;
         }
-        if(month.equals("DECEMBER")) {
+        if (month.equals("DECEMBER")) {
             number = 12;
         }
         return number;
@@ -156,8 +166,8 @@ public class DateUtil {
         String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         String string = "";
 
-        if(i > 0 && i <= 12) {
-            string =  months[i-1];
+        if (i > 0 && i <= 12) {
+            string = months[i - 1];
         }
         return string;
     }
@@ -168,8 +178,7 @@ public class DateUtil {
         try {
             String dateString = dateFormat.format(date);
             datefmt = (Date) dateFormat.parse(dateString);
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return datefmt;
@@ -179,7 +188,7 @@ public class DateUtil {
         DateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
         Date date = null;
         try {
-            if(!dateString.equals("") && !dateString.isEmpty()) {
+            if (!dateString.equals("") && !dateString.isEmpty()) {
                 date = dateFormat.parse(dateString);
             }
         } catch (ParseException exception) {
@@ -192,7 +201,7 @@ public class DateUtil {
         DateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
         String dateString = "";
         try {
-            dateString = (date == null? "" : dateFormat.format(date));
+            dateString = (date == null ? "" : dateFormat.format(date));
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -204,8 +213,7 @@ public class DateUtil {
         try {
             String dateString = unixTimestampToDateString(unixSeconds, format);
             date = (Date) new SimpleDateFormat(format).parse(dateString);
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return date;
@@ -243,6 +251,24 @@ public class DateUtil {
             exception.printStackTrace();
         }
         return date;
+    }
+
+
+    List<String> formatStrings = Arrays.asList("M/y", "M/d/y", "M-d-y");
+
+
+    public Date tryParse(String dateString)
+    {
+        for (String formatString : formatStrings)
+        {
+            try
+            {
+                return new SimpleDateFormat(formatString).parse(dateString);
+            }
+            catch (ParseException e) {}
+        }
+
+        return null;
     }
 
 }

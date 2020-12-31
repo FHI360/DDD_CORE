@@ -74,12 +74,12 @@ public class ClientProfileActivity2 extends AppCompatActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     static final int NUMBER_OF_PAGES = 2;
-    String serverUrl = null;
+
     private int[] layouts;
     private Context context;
     private Patient patient;
     private int id;
-    private int patientId;
+    private Long patientId;
     private Date dateDiscontinued;
     private String reasonDiscontinued;
     private Calendar myCalendar = Calendar.getInstance();
@@ -96,7 +96,7 @@ public class ClientProfileActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_profile2);
-        serverUrl = getApplicationContext().getResources().getString(R.string.server_url);
+
         clientprofile = findViewById(R.id.clientprofile);
         avarter = findViewById(R.id.avarter);
         appointment = findViewById(R.id.appointment);
@@ -160,7 +160,7 @@ public class ClientProfileActivity2 extends AppCompatActivity {
         final TextView cancel_action;
         cancel_action = promptsView.findViewById(R.id.cancel_action);
         avarter = promptsView.findViewById(R.id.avarter);
-        serverUrl = getApplicationContext().getResources().getString(R.string.server_url);
+
         cancel_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,8 +176,9 @@ public class ClientProfileActivity2 extends AppCompatActivity {
 
         int age = 0;
         try {
-            age = DateUtil.getAge(new SimpleDateFormat("yyyy-MM-dd").parse(patient.getDateBirth()), new Date());
-        } catch (ParseException e) {
+            System.out.println("DATEBIRT " + patient.getDateBirth());
+            age = DateUtil.getAge(patient.getDateBirth());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println("NAME " + patient.getSurname());
@@ -214,7 +215,6 @@ public class ClientProfileActivity2 extends AppCompatActivity {
         cancel_action = promptsView.findViewById(R.id.cancel_action);
         constraintLayout.setBackgroundResource(0);
         avarter = promptsView.findViewById(R.id.avarter);
-        serverUrl = getApplicationContext().getResources().getString(R.string.server_url);
         cancel_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -340,7 +340,7 @@ public class ClientProfileActivity2 extends AppCompatActivity {
         cancel_action = promptsView.findViewById(R.id.cancel_action);
 
         avarter = promptsView.findViewById(R.id.avarter);
-        serverUrl = getApplicationContext().getResources().getString(R.string.server_url);
+
         cancel_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -363,7 +363,7 @@ public class ClientProfileActivity2 extends AppCompatActivity {
         ((TextView) promptsView.findViewById(R.id.name)).setText(Html.fromHtml(clientName));
 
 
-        Button save = findViewById(R.id.save_button);
+        Button save = promptsView.findViewById(R.id.save_button);
         save.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SimpleDateFormat")
             @Override
@@ -375,7 +375,7 @@ public class ClientProfileActivity2 extends AppCompatActivity {
                 }
                 reasonDiscontinued = String.valueOf(((Spinner) findViewById(R.id.reason_discontinued)).getSelectedItem());
                 if (dateDiscontinued != null) {
-                    DDDDb.getInstance(ClientProfileActivity2.this).devolveRepository().update1(patientId, dateDiscontinued, reasonDiscontinued);
+                    DDDDb.getInstance(ClientProfileActivity2.this).devolveRepository().update1(patientId, String.valueOf(dateDiscontinued), reasonDiscontinued);
                     FancyToast.makeText(getApplicationContext(), "Client discontinued from service", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
                     dialog.dismiss();
                 } else {

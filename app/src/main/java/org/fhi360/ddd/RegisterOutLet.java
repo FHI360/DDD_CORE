@@ -2,55 +2,40 @@ package org.fhi360.ddd;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Contacts;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
-import com.lamudi.phonefield.PhoneEditText;
-
-import org.fhi360.ddd.R;
-
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.fhi360.ddd.Db.DDDDb;
-import org.fhi360.ddd.domain.Account;
-import org.fhi360.ddd.domain.User;
+import org.fhi360.ddd.domain.Facility;
+import org.fhi360.ddd.domain.Pharmacy;
+import org.fhi360.ddd.dto.FacilityDto;
+import org.fhi360.ddd.dto.PharmacyDto;
+import org.fhi360.ddd.util.PrefManager;
 import org.fhi360.ddd.webservice.APIService;
 import org.fhi360.ddd.webservice.ClientAPI;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
+import lombok.Lombok;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,11 +43,13 @@ import retrofit2.Response;
 public class RegisterOutLet extends AppCompatActivity {
 
     private Button button;
-    private EditText name, email, address;
+    private EditText name, email, username, address;
     private EditText phone;
-    private Spinner type;
+    private Spinner type, facilityName;
+    private TextView pinCode;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
     private ProgressDialog progressdialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,16 +62,20 @@ public class RegisterOutLet extends AppCompatActivity {
         address = findViewById(R.id.address);
         type = findViewById(R.id.type);
         email = findViewById(R.id.email);
+        username = findViewById(R.id.username);
+        facilityName = findViewById(R.id.facilityName);
+        pinCode = findViewById(R.id.pinCode);
+        //  saveFacility();
+        //ImageView back = findViewById(R.id.back);
 
-        ImageView back = findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), FacilityHome.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getApplicationContext(), FacilityHome.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
         phone.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("IntentReset")
@@ -95,6 +86,36 @@ public class RegisterOutLet extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
+
+
+        final ArrayList arrayListFacilityId = new ArrayList();
+        ArrayList arrayListFacilityName = new ArrayList();
+        List<Facility> facilityDtoArrayList = DDDDb.getInstance(RegisterOutLet.this).facilityRepository().findAll();
+
+        for (Facility facility : facilityDtoArrayList) {
+            arrayListFacilityId.add(facility.getId());
+            arrayListFacilityName.add(facility.getName());
+        }
+        final ArrayAdapter<String> districtAdapter = new ArrayAdapter<>(RegisterOutLet.this,
+                R.layout.spinner_items, arrayListFacilityName);
+        districtAdapter.setDropDownViewResource(R.layout.spinner_text_color);
+        districtAdapter.notifyDataSetChanged();
+        facilityName.setAdapter(districtAdapter);
+        facilityName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                long facId = (long) arrayListFacilityId.get(position);
+                System.out.println("FACILTYID" + facId);
+                new PrefManager(getApplicationContext()).saveFacId(facId);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.outlet_type, R.layout.spinner_text_color);
 
@@ -104,6 +125,7 @@ public class RegisterOutLet extends AppCompatActivity {
         type.setAdapter(adapter);
 
         button.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SimpleDateFormat")
             @Override
             public void onClick(View v) {
                 String name1 = name.getText().toString();
@@ -112,24 +134,32 @@ public class RegisterOutLet extends AppCompatActivity {
                 String address1 = address.getText().toString();
                 String email1 = email.getText().toString();
                 if (validateInput(name1, type1, phone1, address1)) {
-                    Account user = DDDDb.getInstance(RegisterOutLet.this).pharmacistAccountRepository().findByPhoneAndEmail(phone1, email1);
+                    Pharmacy user = DDDDb.getInstance(RegisterOutLet.this).pharmacistAccountRepository().findByPhoneAndEmail(phone1, email1);
                     if (user != null) {
                         FancyToast.makeText(getApplicationContext(), "Outlet with these credentials already registered", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                     } else {
-                        Account account1 = new Account();
-                        account1.setAddress(address1);
-                        account1.setPharmacy(name1);
-                        account1.setPhone(phone1);
-                        account1.setEmail(email1);
-                        account1.setType(type1);
-                        account1.setDateRegistration(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-                        //save(account1);
-                        DDDDb.getInstance(RegisterOutLet.this).pharmacistAccountRepository().save(account1);
-                        FancyToast.makeText(getApplicationContext(), "notification has been sent email , kindly assigned client", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                        //Long facilityId = DDDDb.getInstance(getApplicationContext()).facilityRepository().getFacility().getId();
+                        PharmacyDto pharmacyDto = new PharmacyDto();
+                        pharmacyDto.setAddress(address1);
+                        pharmacyDto.setName(name1);
+                        pharmacyDto.setPhone(phone1);
+                        pharmacyDto.setEmail(email1);
+                        pharmacyDto.setType(type1);
+                        Facility facility = new Facility();
+                        HashMap<String, String> facility1 = new PrefManager(RegisterOutLet.this).getFacId();
+                        String facId = facility1.get("facId");
+                        Long fac = Long.valueOf(facId);
+                        System.out.println("FACILITYID " + fac);
+                        facility.setId(Long.valueOf(facId));
+                        pharmacyDto.setFacility(facility);
+                        pharmacyDto.setUsername(username.getText().toString());
+                        save(pharmacyDto);
 
                     }
                 }
             }
+
+
         });
 
     }
@@ -181,7 +211,6 @@ public class RegisterOutLet extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "SMS faild, please try again.", Toast.LENGTH_LONG).show();
-                    return;
                 }
             }
         }
@@ -209,35 +238,57 @@ public class RegisterOutLet extends AppCompatActivity {
     }
 
 
-    private void save(Account account) {
+    private void save(PharmacyDto account) {
         progressdialog = new ProgressDialog(RegisterOutLet.this);
         progressdialog.setMessage("DDD outlet saving...");
         progressdialog.setCancelable(false);
         progressdialog.setIndeterminate(false);
         progressdialog.setMax(100);
         progressdialog.show();
-        APIService apiService = new APIService();
-        ClientAPI clientAPI = apiService.createService(ClientAPI.class);
-
-        Call<Account> objectCall = clientAPI.saveAccount(account);
-
-        objectCall.enqueue(new Callback<Account>() {
+        ClientAPI clientAPI = APIService.createService(ClientAPI.class);
+        Call<org.fhi360.ddd.dto.Response> objectCall = clientAPI.saveAccount(account);
+        objectCall.enqueue(new Callback<org.fhi360.ddd.dto.Response>() {
+            @SuppressLint("SimpleDateFormat")
             @Override
-            public void onResponse(Call<Account> call, Response<Account> response) {
+            public void onResponse(Call<org.fhi360.ddd.dto.Response> call, Response<org.fhi360.ddd.dto.Response> response) {
                 if (response.isSuccessful()) {
-                    Account account1 = response.body();
-                    System.out.println("ACCOUNT " + account1);
-                    DDDDb.getInstance(RegisterOutLet.this).pharmacistAccountRepository().save(account1);
-                    FancyToast.makeText(getApplicationContext(), "notification has been sent email , kindly assigned client", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
-                    progressdialog.dismiss();
+                    org.fhi360.ddd.dto.Response response1 = response.body();
+                    if (Objects.requireNonNull(response1).getMessage() != null) {
+                        FancyToast.makeText(getApplicationContext(), response1.getMessage(), FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                        progressdialog.dismiss();
+                    } else if (Objects.requireNonNull(response1).getPharmacy() != null) {
+                        PharmacyDto account1 = Objects.requireNonNull(response.body()).getPharmacy();
+                        System.out.println("ACCOUNT " + account1);
+                        Pharmacy account = new Pharmacy();
+                        account.setId(account.getId());
+                        account.setAddress(account1.getAddress());
+                        account.setName(account1.getName());
+                        account.setPhone(account1.getPhone());
+                        account.setEmail(account1.getEmail());
+                        account.setType(account1.getType());
+                        account.setPin(account1.getPin());
+                        account.setFacilityId(account1.getFacility().getId());
+                        account.setUsername(account1.getUsername());
+                        account.setDateRegistration(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+                        DDDDb.getInstance(RegisterOutLet.this).pharmacistAccountRepository().save(account);
+                        FancyToast.makeText(getApplicationContext(), "notification has been sent email , kindly assigned client", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                        pinCode.setText("Activation Code is : " + account1.getPin());
+                        address.setText("");
+                        name.setText("");
+                        phone.setText("");
+                        email.setText("");
+                        progressdialog.dismiss();
+
+                    }
+
                 } else {
-                    FancyToast.makeText(getApplicationContext(), "Contact Server administrator", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                    FancyToast.makeText(getApplicationContext(), "Contact System administrator ", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                     progressdialog.dismiss();
                 }
             }
 
             @Override
-            public void onFailure(Call<Account> call, Throwable t) {
+            public void onFailure(Call<org.fhi360.ddd.dto.Response> call, Throwable t) {
                 t.printStackTrace();
                 FancyToast.makeText(getApplicationContext(), "No Internet Connection", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                 progressdialog.dismiss();
@@ -246,4 +297,6 @@ public class RegisterOutLet extends AppCompatActivity {
         });
 
     }
+
+
 }

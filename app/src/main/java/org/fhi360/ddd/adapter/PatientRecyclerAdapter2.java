@@ -21,12 +21,17 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.gson.Gson;
 
+import org.fhi360.ddd.AdminClientProfileActivity;
 import org.fhi360.ddd.ClientProfileActivity2;
+import org.fhi360.ddd.Db.DDDDb;
 import org.fhi360.ddd.R;
 import org.fhi360.ddd.ClientProfileActivity;
 import org.fhi360.ddd.domain.Patient;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -96,8 +101,16 @@ public class PatientRecyclerAdapter2 extends RecyclerView.Adapter<PatientRecycle
 
         TextView facilityView = cardView.findViewById(R.id.facility_name);
         TextView dateRegistration = cardView.findViewById(R.id.dateText);
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        dateRegistration.setText(patientList.get(position).getDateNextRefill());
+        try {
+//            String start_dt = patientList.get(position).getDateNextRefill();
+//            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//            Date date = formatter.parse(start_dt);
+//            SimpleDateFormat newFormat = new SimpleDateFormat("MM-dd-yyyy");
+//            String finalString = newFormat.format(date);
+            dateRegistration.setText(patientList.get(position).getDateNextRefill());
+        } catch (Exception e) {
+
+        }
         // TextView starIcon = cardView.findViewById(R.id.starIcon);
 
 //        if (patientList.get(position).getStatus()==0) {
@@ -111,13 +124,15 @@ public class PatientRecyclerAdapter2 extends RecyclerView.Adapter<PatientRecycle
 //            starIcon.setImageDrawable(drawable);
 //        }
 
-        facilityView.setText(patientList.get(position).getFacilityName());
+        String facilityName = DDDDb.getInstance(context).facilityRepository().findOne(patientList.get(position).getFacilityId()).getName();
+        facilityView.setText(facilityName);
+
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 savePreferences(patientList.get(position));
-                Intent intent = new Intent(context, ClientProfileActivity2.class);
+                Intent intent = new Intent(context, AdminClientProfileActivity.class);
                 context.startActivity(intent);
             }
         });

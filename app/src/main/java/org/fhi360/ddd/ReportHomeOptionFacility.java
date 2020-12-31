@@ -24,6 +24,7 @@ public class ReportHomeOptionFacility extends AppCompatActivity {
     private View menu4;
     private View menu5;
     private View menu6;
+    private View menu8;
     private View overlay;
     private TextView next;
     private boolean menuOpen = false;
@@ -39,6 +40,7 @@ public class ReportHomeOptionFacility extends AppCompatActivity {
         menu4 = findViewById(R.id.menu4);
         menu5 = findViewById(R.id.menu5);
         menu6 = findViewById(R.id.menu6);
+        // menu8 = findViewById(R.id.menu8);
         overlay = findViewById(R.id.overlay);
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +82,7 @@ public class ReportHomeOptionFacility extends AppCompatActivity {
         Animation popup4 = AnimationUtils.loadAnimation(this, R.anim.popeup);
         Animation popup5 = AnimationUtils.loadAnimation(this, R.anim.popeup);
         Animation popup6 = AnimationUtils.loadAnimation(this, R.anim.popeup);
+        // Animation popup8 = AnimationUtils.loadAnimation(this, R.anim.popeup);
         popup1.setStartOffset(50);
         popup2.setStartOffset(100);
         popup3.setStartOffset(150);
@@ -91,6 +94,7 @@ public class ReportHomeOptionFacility extends AppCompatActivity {
         menu4.startAnimation(popup4);
         menu5.startAnimation(popup5);
         menu6.startAnimation(popup6);
+        //   menu8.startAnimation(popup8);
     }
 
     public void hideMenu() {
@@ -136,16 +140,21 @@ public class ReportHomeOptionFacility extends AppCompatActivity {
             view.getContext().startActivity(intent);
         }
         if (view.getTag().equals("List of registered DDD outlets")) {
-            Intent intent = new Intent(view.getContext(), ListDDDClient.class);
+            Intent intent = new Intent(view.getContext(), AdminListDDDClient.class);
             view.getContext().startActivity(intent);
         }
         if (view.getTag().equals("List of clients for DDD")) {
-            Intent intent = new Intent(view.getContext(), PatientList2.class);
+            Intent intent = new Intent(view.getContext(), AdminPatientList2.class);
             view.getContext().startActivity(intent);
         }
         if (view.getTag().equals("Defaulters List")) {
             Intent intent = new Intent(view.getContext(), DefaulterListActivity.class);
             view.getContext().startActivity(intent);
         }
+//        if (view.getTag().equals("Assigned Client")) {
+//            Intent intent = new Intent(view.getContext(), AdminPatientList3.class);
+//            view.getContext().startActivity(intent);
+//        }
+
     }
 }

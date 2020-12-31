@@ -20,10 +20,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+
 import org.fhi360.ddd.R;
 
 import org.fhi360.ddd.Db.DDDDb;
 import org.fhi360.ddd.adapter.DefaulterListAdapter;
+import org.fhi360.ddd.domain.ARV;
 import org.fhi360.ddd.domain.Patient;
 
 import java.util.List;
@@ -62,26 +64,26 @@ public class DefaulterListActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             searchMenuOpened = savedInstanceState.getBoolean(SEARCH_OPENED);
             searchQuery = savedInstanceState.getString(SEARCH_QUERY);
-        }
-        else {
+        } else {
             searchMenuOpened = false;
             searchQuery = "";
         }
 
         //If the search bar was opened previously, open it on recreate
-        if(searchMenuOpened) {
+        if (searchMenuOpened) {
             openSearchBar(searchQuery);
         }
 
-        defaulterListView =  findViewById(R.id.defaulterlistView);
-        patients = DDDDb.getInstance(this).patientRepository().findByAll();
+        defaulterListView = findViewById(R.id.defaulterlistView);
+        patients = DDDDb.getInstance(this).patientRepository().getDefaulter();
 
         adapter = new DefaulterListAdapter(this, patients);
         defaulterListView.setAdapter(adapter);
         defaulterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                savePreferences(patients.get(position));
+                Patient patient = DDDDb.getInstance(getApplicationContext()).patientRepository().findByPatient(patients.get(position).getId());
+                savePreferences(patient);
                 Intent intent = new Intent(getApplicationContext(), ClientTrackingActivity.class);
                 startActivity(intent);
             }
@@ -100,17 +102,15 @@ public class DefaulterListActivity extends AppCompatActivity {
     }
 
 
-
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle other ActionBar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             //When the search button is clicked we have to either open or close the input field
             case R.id.action_search:
-                if(searchMenuOpened) {
+                if (searchMenuOpened) {
                     closeSearchBar();
-                }
-                else {
+                } else {
                     openSearchBar(searchQuery);
                 }
                 return true;
@@ -158,24 +158,28 @@ public class DefaulterListActivity extends AppCompatActivity {
 
     //The TextChangedListener reads the text entered in the editable view and pass the content to the refreshView method of the HomeFragment
     private TextWatcher filterTextWatcher = new TextWatcher() {
-        public void afterTextChanged(Editable s) {}
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        public void afterTextChanged(Editable s) {
+        }
+
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            refreshListView(s);
+            //  refreshListView(s);
         }
     };
 
-    public void refreshListView(CharSequence s) {
-        if (!s.toString().equals("")) {
-            long period = 28 * 24 * 60 * 60 * 1000;
-            patients = DDDDb.getInstance(this).patientRepository().getDefaulters(Long.toString(period),s.toString());
-        }
-        else {
-            patients =DDDDb.getInstance(this).patientRepository().getDefaulters();
-        }
-        adapter = new DefaulterListAdapter(this, patients);
-        defaulterListView.setAdapter(adapter);
-    }
+//    public void refreshListView(CharSequence s) {
+//        if (!s.toString().equals("")) {
+//            long period = 28 * 24 * 60 * 60 * 1000;
+//            patients = DDDDb.getInstance(this).patientRepository().getDefaulters(Long.toString(period),s.toString());
+//        }
+//        else {
+//            patients =DDDDb.getInstance(this).patientRepository().getDefaulters();
+//        }
+//        adapter = new DefaulterListAdapter(this, patients);
+//        defaulterListView.setAdapter(adapter);
+//    }
 
     private void savePreferences(Patient patient) {
         preferences = getSharedPreferences(PREFERENCES_ENCOUNTER, 0);

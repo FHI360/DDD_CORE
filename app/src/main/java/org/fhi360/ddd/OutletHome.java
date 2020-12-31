@@ -1,99 +1,4 @@
 package org.fhi360.ddd;
-//
-//import android.app.ProgressDialog;
-//import android.content.Context;
-//import android.content.Intent;
-//import android.content.SharedPreferences;
-//import android.os.Bundle;
-//import android.os.CountDownTimer;
-//import android.view.View;
-//import android.widget.LinearLayout;
-//
-//import androidx.appcompat.app.AppCompatActivity;
-//
-//import com.shashank.sony.fancytoastlib.FancyToast;
-//
-//import java.util.HashMap;
-//import java.util.Objects;
-//
-//public class OutletHome extends AppCompatActivity {
-//    private LinearLayout newVisit;
-//    private LinearLayout reVisit;
-//    private LinearLayout summaryReport;
-//    private LinearLayout synchronize;
-//    private ProgressDialog progressdialog;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_outlet_home);
-//        newVisit = findViewById(R.id.newVisit);
-//        reVisit = findViewById(R.id.reVisit);
-//        summaryReport = findViewById(R.id.summaryReport);
-//        synchronize = findViewById(R.id.synchronize);
-//        HashMap<String, String> name = get();
-//        String userName = name.get("name");
-//        assert userName != null;
-//        Objects.requireNonNull(getSupportActionBar()).setTitle("Welcome, " + userName.toUpperCase());
-//
-//        newVisit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(OutletHome.this, ActivityOptionsNewPatient.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        reVisit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(OutletHome.this, PatientList.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        summaryReport.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(OutletHome.this, ReportHomeOption.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        synchronize.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                progressdialog = new ProgressDialog(OutletHome.this);
-//                progressdialog.setMessage("App Synchronization with Server in Progress...");
-//                progressdialog.setCancelable(false);
-//                progressdialog.setIndeterminate(false);
-//                progressdialog.setMax(100);
-//                progressdialog.show();
-//                countDownTimer.start();
-//            }
-//        });
-//    }
-//
-//    private CountDownTimer countDownTimer = new CountDownTimer(10000, 100) {
-//        public void onTick(long millisUntilFinished) {
-//            progressdialog.setProgress(Math.abs((int) millisUntilFinished / 100 - 100));
-//        }
-//
-//        @Override
-//        public void onFinish() {
-//            FancyToast.makeText(getApplicationContext(), "Sync Was successful", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
-//            progressdialog.dismiss();
-//        }
-//    };
-//
-//    public HashMap<String, String> get() {
-//        HashMap<String, String> name = new HashMap<>();
-//        SharedPreferences sharedPreferences = this.getSharedPreferences("name", Context.MODE_PRIVATE);
-//        name.put("name", sharedPreferences.getString("name", null));
-//        return name;
-//    }
-//}
-
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -115,11 +20,15 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator;
 
+import org.fhi360.ddd.Db.DDDDb;
 import org.fhi360.ddd.adapter.CardFragmentPagerAdapter;
 import org.fhi360.ddd.adapter.cardPagerAdapterHome;
 import org.fhi360.ddd.domain.CardItem;
+import org.fhi360.ddd.domain.Patient;
+import org.fhi360.ddd.domain.Pharmacy;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class OutletHome extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
@@ -151,7 +60,7 @@ public class OutletHome extends AppCompatActivity implements View.OnClickListene
         imageView = findViewById(R.id.imageView);
 
 
-        SpringDotsIndicator springDotsIndicator =  findViewById(R.id.spring_dots_indicator);
+        SpringDotsIndicator springDotsIndicator = findViewById(R.id.spring_dots_indicator);
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,18 +72,20 @@ public class OutletHome extends AppCompatActivity implements View.OnClickListene
         });
 
         names = findViewById(R.id.names);
-        HashMap<String, String> name = get();
-        String userName = name.get("name");
+       // HashMap<String, String> name = get();
+     //   List<Patient> patientList = DDDDb.getInstance(getApplicationContext()).patientRepository().findByAll();
+     //   System.out.println("PATIENTSIZE" +patientList.size());
+        String userName = DDDDb.getInstance(getApplicationContext()).pharmacistAccountRepository().findbyOne().getName();
         assert userName != null;
         String firstLettersurname = String.valueOf(userName.charAt(0));
         String fullSurname = firstLettersurname.toUpperCase() + userName.substring(1).toLowerCase();
-        names.setText("hi, " + fullSurname + " OUTLET");
+        names.setText("Hi, " + fullSurname + " OUTLET");
         mCardAdapter = new cardPagerAdapterHome();
         mCardAdapter.addCardItem(this, new CardItem(R.string.title_1, R.string.text_1));
         mCardAdapter.addCardItem(this, new CardItem(R.string.title_2, R.string.text_2));
-        mCardAdapter.addCardItem(this, new CardItem(R.string.title_3, R.string.text_3));
+          mCardAdapter.addCardItem(this, new CardItem(R.string.title_3, R.string.text_3));
         mCardAdapter.addCardItem(this, new CardItem(R.string.title_4, R.string.text_4));
-        mCardAdapter.addCardItem(this, new CardItem(R.string.title_5, R.string.text_5));
+       // mCardAdapter.addCardItem(this, new CardItem(R.string.title_5, R.string.text_5));
         mFragmentCardAdapter = new CardFragmentPagerAdapter(getSupportFragmentManager(),
                 dpToPixels(2, this));
 

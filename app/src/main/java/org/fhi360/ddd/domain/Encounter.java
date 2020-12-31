@@ -18,7 +18,7 @@ public class Encounter implements Serializable {
     @ColumnInfo(name = "facility_id")
     private int facilityId;
     @ColumnInfo(name = "patient_id")
-    private int patientId;
+    private Long patientId;
     @ColumnInfo(name = "date_visit")
     private Date dateVisit;
     @ColumnInfo(name = "question1")

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="@color/bgcolor"
+
         app:cardCornerRadius="5dp"
         app:cardElevation="5dp">
 
@@ -33,7 +33,7 @@
                 android:layout_marginBottom="10dp"
                 android:padding="10dp"
                 android:text="Vitals"
-                android:textColor="#fff"
+                android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -43,7 +43,7 @@
                 android:layout_margin="10dp"
                 android:layout_marginTop="10dp"
                 android:paddingTop="2dp"
-                android:textColorHint="#fff">
+                android:textColorHint="@color/black">
 
                 <EditText
                     android:id="@+id/date_visit"
@@ -52,7 +52,7 @@
                     android:background="@android:color/transparent"
                     android:focusable="false"
                     android:hint="Encounter Date"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <View
@@ -61,7 +61,7 @@
 
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="@color/colorSolitude" />
+                android:background="@color/black" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/body_weight1"
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:paddingTop="2dp"
-                android:textColorHint="#fff">
+                android:textColorHint="@color/black">
 
                 <EditText
                     android:id="@+id/body_weight"
@@ -78,7 +78,7 @@
                     android:background="@android:color/transparent"
                     android:hint="Body Weight (kg)"
                     android:inputType="number|numberDecimal"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <View
@@ -87,7 +87,7 @@
 
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="@color/colorSolitude" />
+                android:background="@color/black" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/bp1"
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:paddingTop="2dp"
-                android:textColorHint="#fff">
+                android:textColorHint="@color/black">
 
                 <EditText
                     android:id="@+id/bp2"
@@ -104,7 +104,7 @@
                     android:background="@android:color/transparent"
                     android:hint="Bp (systolic) mmHg"
                     android:inputType="number|numberDecimal"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <View
@@ -113,7 +113,7 @@
 
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="@color/colorSolitude" />
+                android:background="@color/black" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/bpdystolic1"
@@ -121,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:paddingTop="2dp"
-                android:textColorHint="#fff">
+                android:textColorHint="@color/black">
 
                 <EditText
                     android:id="@+id/bpdystolic"
@@ -130,7 +130,7 @@
                     android:background="@android:color/transparent"
                     android:hint="Bp (diastolic) mmHg"
                     android:inputType="number|numberDecimal"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <View
@@ -138,7 +138,33 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="@color/colorSolitude" />
+                android:background="@color/black" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/temprature1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:paddingTop="2dp"
+                android:textColorHint="@color/black">
+
+                <EditText
+                    android:id="@+id/temprature"
+                    style="@style/TextBox"
+                    android:layout_below="@+id/textView2"
+                    android:background="@android:color/transparent"
+                    android:hint="Temperature (°C) "
+                    android:inputType="number|numberDecimal"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/black" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

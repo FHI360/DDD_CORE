@@ -20,12 +20,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator;
 
+import org.fhi360.ddd.Db.DDDDb;
 import org.fhi360.ddd.adapter.CardFragmentPagerAdapter;
 import org.fhi360.ddd.adapter.FacilityCardPagerAdapter;
 import org.fhi360.ddd.adapter.cardPagerAdapterHome;
 import org.fhi360.ddd.domain.CardItem;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class FacilityHome extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
@@ -62,17 +64,26 @@ public class FacilityHome extends AppCompatActivity implements View.OnClickListe
         });
 
         names = findViewById(R.id.names);
-        HashMap<String, String> name = get();
-        String userName = name.get("name");
-        assert userName != null;
-        String firstLettersurname = String.valueOf(userName.charAt(0));
-        String fullSurname = firstLettersurname.toUpperCase() + userName.substring(1).toLowerCase();
-        names.setText("hi, " + fullSurname);
+
+        HashMap<String, String> role = get();
+        String role1 = role.get("name");
+        if (role1 != null) {
+            String firstLettersurname = String.valueOf(role1.charAt(0));
+            String fullSurname = firstLettersurname.toUpperCase() + role1.substring(1).toLowerCase();
+            names.setText("hi, " + fullSurname);
+        } //else {
+//            String userName = DDDDb.getInstance(getApplicationContext()).userRepository().findByOne().getUsername();
+//            String firstLettersurname = String.valueOf(userName.charAt(0));
+//            String fullSurname = firstLettersurname.toUpperCase() + userName.substring(1).toLowerCase();
+//            names.setText("hi, " + fullSurname);
+//        }
+
         mCardAdapter = new FacilityCardPagerAdapter();
         mCardAdapter.addCardItem(this, new CardItem(R.string.title1_1, R.string.title1_11));
-        mCardAdapter.addCardItem(this, new CardItem(R.string.title1_2, R.string.title1_21));
+        mCardAdapter.addCardItem(this, new CardItem(R.string.title1_2, R.string.title1_134));
+        mCardAdapter.addCardItem(this, new CardItem(R.string.title1_3, R.string.title1_21));
         mCardAdapter.addCardItem(this, new CardItem(R.string.title1_4, R.string.title1_41));
-        mCardAdapter.addCardItem(this, new CardItem(R.string.title1_5, R.string.text_5));
+
         mFragmentCardAdapter = new CardFragmentPagerAdapter(getSupportFragmentManager(),
                 dpToPixels(2, this));
 

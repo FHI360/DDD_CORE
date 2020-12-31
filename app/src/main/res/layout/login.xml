@@ -73,21 +73,20 @@
                             app:hintEnabled="false">
 
                             <EditText
-                                android:id="@+id/username"
+                                android:id="@+id/username1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@android:color/transparent"
                                 android:hint="@string/user_name_label"
-                                android:inputType="text"
-                                android:maxLines="1"
+                                android:inputType="textVisiblePassword"
                                 android:paddingLeft="@dimen/activity_horizontal_margin"
                                 android:paddingTop="12dp"
                                 android:paddingRight="@dimen/activity_horizontal_margin"
                                 android:paddingBottom="12dp"
                                 android:singleLine="true"
                                 android:textColor="#eeeeee"
+                                android:importantForAutofill="no"
                                 android:textColorHint="#eeeeee"
-                                tools:ignore="Autofill"
                                 tools:targetApi="m" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -126,7 +125,7 @@
                             app:passwordToggleTint="#FFF">
 
                             <EditText
-                                android:id="@+id/password"
+                                android:id="@+id/password1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@android:color/transparent"
@@ -136,16 +135,13 @@
                                 android:imeActionLabel="@string/password"
                                 android:imeOptions="actionDone"
                                 android:inputType="textPassword"
-                                android:maxLines="1"
                                 android:paddingLeft="@dimen/activity_horizontal_margin"
                                 android:paddingTop="12dp"
                                 android:paddingRight="@dimen/activity_horizontal_margin"
                                 android:paddingBottom="12dp"
                                 android:singleLine="true"
                                 android:textColor="#eeeeee"
-                                android:textColorHint="#eeeeee"
-                                tools:ignore="Autofill"
-                                tools:targetApi="m" />
+                                android:textColorHint="#eeeeee" />
                         </com.google.android.material.textfield.TextInputLayout>
 
 

@@ -1,37 +1,24 @@
 package org.fhi360.ddd;
 
-import android.content.Intent;
 import android.os.Bundle;
-
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.SearchView;
-
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
-
-import org.fhi360.ddd.R;
-
 import com.mlsdev.animatedrv.AnimatedRecyclerView;
-
 import org.fhi360.ddd.Db.DDDDb;
-import org.fhi360.ddd.adapter.ListDDDClientAdapter;
 import org.fhi360.ddd.adapter.ListDDDClientAdapter2;
-import org.fhi360.ddd.adapter.PatientRecyclerAdapter;
-import org.fhi360.ddd.domain.Account;
+import org.fhi360.ddd.domain.Pharmacy;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListDDDClient2 extends AppCompatActivity implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
     private RecyclerView recyclerViewHts;
-    private List<Account> accountList;
+    private List<Pharmacy> accountList;
     private ListDDDClientAdapter2 patientRecyclerAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,16 +68,16 @@ public class ListDDDClient2 extends AppCompatActivity implements SearchView.OnQu
             return false;
         }
 
-        List<Account> filteredValues = new ArrayList<>(accountList);
-        for (Account value : accountList) {
-            if (!value.getPharmacy().toLowerCase().contains(newText.toLowerCase())) {
+        List<Pharmacy> filteredValues = new ArrayList<>(accountList);
+        for (Pharmacy value : accountList) {
+            if (!value.getName().toLowerCase().contains(newText.toLowerCase())) {
                 filteredValues.remove(value);
             }
         }
 
-        List<Account> filteredValues1 = new ArrayList<>(accountList);
-        for (Account value : accountList) {
-            if (!value.getPharmacy().toLowerCase().contains(newText.toLowerCase())) {
+        List<Pharmacy> filteredValues1 = new ArrayList<>(accountList);
+        for (Pharmacy value : accountList) {
+            if (!value.getName().toLowerCase().contains(newText.toLowerCase())) {
                 filteredValues1.remove(value);
             }
         }

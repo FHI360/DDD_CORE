@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                           xmlns:app="http://schemas.android.com/apk/res-auto"
+                           xmlns:tools="http://schemas.android.com/tools"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:id="@+id/personalDetailsCard2"
+>
+
+    <androidx.cardview.widget.CardView
+            android:id="@+id/personalDetailsCard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="12dp"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+
+            >
+                <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Date of birth unknown"
+                        android:id="@+id/estimatedAge"
+                />
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:paddingTop="2dp"
+                        android:padding="5dp"
+                        android:visibility="gone"
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/ageEnrollemt1"
+                        android:paddingBottom="4dp">
+                    <EditText
+                            android:id="@+id/ageEnrollemt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableTint="#421C52"
+                            android:hint="Enter Age at Registration"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="2dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="10dp"
+                            android:textColor="#000"
+
+                    />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+
+            >
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/inputLayoutdateBirth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="4dp">
+
+                    <EditText
+                            android:id="@+id/dateBirthEnrollemt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:drawableTint="#421C52"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:hint="Date of Birth (MM/dd/yyyy)"
+                            android:inputType="datetime"
+                            android:longClickable="false"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="2dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="10dp"
+                            android:singleLine="true"
+
+                    />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+
+            >
+
+                <com.google.android.material.textfield.TextInputLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="4dp">
+
+                    <EditText
+                            android:id="@+id/age"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:drawableTint="#421C52"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:hint="Age"
+                            android:longClickable="false"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="2dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="10dp"
+                            android:singleLine="true"
+
+                    />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="Gender"
+                        android:textColor="#000"/>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/genders"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/gender"
+                        android:spinnerMode="dropdown"
+                        android:textAlignment="center"/>
+
+            </LinearLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="8dp"
+
+                    android:paddingTop="2dp"
+                    android:paddingBottom="4dp">
+
+                <EditText
+                        android:id="@+id/addresss"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableTint="#421C52"
+                        android:hint="Address"
+                        android:inputType="textPersonName"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="10dp"
+                        android:singleLine="true"
+                        android:textColor="#000"
+                        android:textStyle="bold"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/invalidPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+
+                    android:paddingTop="2dp"
+                    android:paddingBottom="4dp">
+
+                <EditText
+                        android:id="@+id/phones"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableTint="#421C52"
+                        android:hint="phone"
+                        android:inputType="phone"
+                        android:maxLength="12"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="10dp"
+                        android:singleLine="true"
+                        android:textColor="#000"
+                        android:textStyle="bold"/>
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="2dp">
+
+                <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="Clinical Stage"
+                        android:textColor="#000"/>
+
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/lastClinicalStage"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/clinical_stage"
+                    android:spinnerMode="dropdown"
+                    android:textAlignment="center"/>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+
+                    android:paddingTop="2dp"
+                    android:paddingBottom="4dp">
+
+                <EditText
+                        android:id="@+id/lastViralLoad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableTint="#421C52"
+                        android:maxLength="12"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="10dp"
+                        android:singleLine="true"
+                        android:hint="Last Viral Load"
+                        android:inputType="number"
+                        android:textColor="#000"
+                        android:textStyle="bold"/>
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</android.widget.ScrollView>

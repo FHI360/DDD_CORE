@@ -18,5 +18,6 @@ public class Drug implements Serializable {
     private String drugName;
     @ColumnInfo(name = "basic_unit")
     private String basicUnit;
-
+    @ColumnInfo(name = "regime_id")
+    private Long regimeId;
 }

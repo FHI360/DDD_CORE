@@ -21,6 +21,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator;
 
+import org.fhi360.ddd.Db.DDDDb;
 import org.fhi360.ddd.adapter.CardFragmentPagerAdapter;
 import org.fhi360.ddd.adapter.InventoryPagerAdapter;
 import org.fhi360.ddd.adapter.cardPagerAdapterHome;
@@ -58,7 +59,7 @@ public class OutletRecievedAndRequest extends AppCompatActivity implements View.
         imageView = findViewById(R.id.imageView);
 
 
-        SpringDotsIndicator springDotsIndicator = findViewById(R.id.spring_dots_indicator);
+       // SpringDotsIndicator springDotsIndicator = findViewById(R.id.spring_dots_indicator);
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,13 +70,15 @@ public class OutletRecievedAndRequest extends AppCompatActivity implements View.
             }
         });
 
-        names = findViewById(R.id.names);
-        HashMap<String, String> name = get();
-        String userName = name.get("name");
-        assert userName != null;
-        String firstLettersurname = String.valueOf(userName.charAt(0));
-        String fullSurname = firstLettersurname.toUpperCase() + userName.substring(1).toLowerCase();
-        names.setText("hi, " + fullSurname + " OUTLET");
+//        names = findViewById(R.id.names);
+//        HashMap<String, String> name = get();
+//        String userName = name.get("name");
+
+//        String userName = DDDDb.getInstance(getApplicationContext()).pharmacistAccountRepository().findbyOne().getName();
+//        assert userName != null;
+//        String firstLettersurname = String.valueOf(userName.charAt(0));
+//        String fullSurname = firstLettersurname.toUpperCase() + userName.substring(1).toLowerCase();
+//        names.setText("hi, " + fullSurname + " OUTLET");
         mCardAdapter = new InventoryPagerAdapter();
         mCardAdapter.addCardItem(this, new CardItem(R.string.drug_recieved, R.string.drug_recieved_desc));
         mCardAdapter.addCardItem(this, new CardItem(R.string.drug_requestion, R.string.drug_request_desc));
@@ -86,7 +89,7 @@ public class OutletRecievedAndRequest extends AppCompatActivity implements View.
         mFragmentCardShadowTransformer = new ShadowTransformer(mViewPager, mFragmentCardAdapter);
 
         mViewPager.setAdapter(mCardAdapter);
-        springDotsIndicator.setViewPager(mViewPager);
+      //  springDotsIndicator.setViewPager(mViewPager);
         mViewPager.setPageTransformer(false, mCardShadowTransformer);
         mViewPager.setOffscreenPageLimit(3);
 

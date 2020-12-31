@@ -17,13 +17,13 @@ public class IssuedDrug implements Serializable {
     @ColumnInfo(name = "pin_code")
     private String pinCode;
     @ColumnInfo(name = "drug_id")
-    private String drugId;
+    private Long regimenId;
     @ColumnInfo(name = "batch_number")
     private String batchNumber;
     @ColumnInfo(name = "expired_date")
     private String expireDate;
     @ColumnInfo(name = "quantity")
-    private String quantity;
+    private double quantity;
 
 
 

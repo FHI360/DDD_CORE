@@ -39,7 +39,7 @@ import static org.fhi360.ddd.util.Constants.PREFERENCES_ENCOUNTER;
 
 public class DiscontinueServiceActivity extends AppCompatActivity {
     private int id;
-    private int patientId;
+    private Long patientId;
     private Date dateDiscontinued;
     private String reasonDiscontinued;
     private Calendar myCalendar = Calendar.getInstance();
@@ -80,7 +80,7 @@ public class DiscontinueServiceActivity extends AppCompatActivity {
                 }
                 reasonDiscontinued = String.valueOf(((Spinner) findViewById(R.id.reason_discontinued)).getSelectedItem());
                 if (dateDiscontinued != null) {
-                    DDDDb.getInstance(DiscontinueServiceActivity.this).devolveRepository().update1(patientId, dateDiscontinued, reasonDiscontinued);
+                    DDDDb.getInstance(DiscontinueServiceActivity.this).devolveRepository().update1(patientId, String.valueOf(dateDiscontinued), reasonDiscontinued);
                     FancyToast.makeText(getApplicationContext(), "Client discontinued from service", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
                     Intent intent = new Intent(DiscontinueServiceActivity.this, ClientProfileActivity.class);
                     startActivity(intent);

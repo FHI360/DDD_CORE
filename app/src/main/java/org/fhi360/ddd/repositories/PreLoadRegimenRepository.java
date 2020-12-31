@@ -18,17 +18,17 @@ public interface PreLoadRegimenRepository {
     @Query("SELECT * FROM preloadregimen where id = :id")
     PreLoadRegimen findByOne(int id);
 
-    @Query("SELECT * FROM preloadregimen where regimentype = :regimentype")
+    @Query("SELECT * FROM preloadregimen where regimentype_id = :regimentype")
     PreLoadRegimen getRegimenTypeId(String regimentype);
 
-    @Query("SELECT regimen FROM preloadregimen where regimentype_id == 300")
-    List<String> getARV();
+    @Query("SELECT * FROM preloadregimen where regimentype_id == 300")
+    List<PreLoadRegimen> getARV();
 
 
-    @Query("SELECT regimen FROM preloadregimen where regimentype_id = :regimentypeId")
-    List<String> getRegimens(int regimentypeId);
+    @Query("SELECT * FROM preloadregimen where regimentype_id = :regimentypeId")
+    List<PreLoadRegimen> getRegimens(int regimentypeId);
 
-    @Query("SELECT regimen FROM preloadregimen where regimentype_id = 8")
+    @Query("SELECT name FROM preloadregimen where regimentype_id = 8")
     List<String> getOtherMedicines();
 
     @Insert

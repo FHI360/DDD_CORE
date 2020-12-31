@@ -66,7 +66,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginLeft="8dp"
                             android:layout_weight="10"
-                            android:src="@drawable/address" />
+                            android:src="@drawable/location" />
 
                         <TextView
                             android:id="@+id/address"
@@ -98,12 +98,6 @@
                             android:orientation="horizontal"
                             android:weightSum="100">
 
-                            <ImageView
-                                android:layout_width="0dp"
-                                android:layout_height="32dp"
-                                android:layout_weight="10"
-                                android:src="@drawable/email"
-                                tools:ignore="NestedWeights" />
 
                             <TextView
                                 android:id="@+id/email"
@@ -136,12 +130,6 @@
                             android:orientation="horizontal"
                             android:weightSum="100">
 
-                            <ImageView
-                                android:layout_width="0dp"
-                                android:layout_height="32dp"
-                                android:layout_weight="10"
-                                android:src="@drawable/mobile"
-                                tools:ignore="NestedWeights" />
 
                             <TextView
                                 android:id="@+id/phone"
@@ -161,11 +149,12 @@
                 </RelativeLayout>
 
             </RelativeLayout>
+
             <LinearLayout
-                android:layout_marginTop="250dp"
                 android:id="@+id/cd4_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="250dp"
                 android:orientation="horizontal"
                 android:weightSum="100">
 

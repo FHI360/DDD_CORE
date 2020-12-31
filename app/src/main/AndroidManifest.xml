@@ -1,429 +1,566 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="org.fhi360.ddd">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="org.fhi360.ddd">
 
     <supports-screens
-        android:anyDensity="true"
-        android:largeScreens="true"
-        android:normalScreens="true"
-        android:smallScreens="true"
-        android:xlargeScreens="true" />
-    <uses-permission android:name="android.permission.INTERNET" />
+            android:anyDensity="true"
+            android:largeScreens="true"
+            android:normalScreens="true"
+            android:smallScreens="true"
+            android:xlargeScreens="true"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
-        android:allowBackup="true"
-        android:appComponentFactory="whateverString"
-        android:configChanges="locale|orientation"
-        android:hardwareAccelerated="true"
-        android:icon="@drawable/logo"
-        android:requestLegacyExternalStorage="true"
-        android:roundIcon="@drawable/logo"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        tools:ignore="AllowBackup"
-        tools:replace="android:appComponentFactory"
-        tools:targetApi="p">
+            android:allowBackup="true"
+            android:appComponentFactory="whateverString"
+            android:configChanges="locale|orientation"
+            android:icon="@drawable/logo"
+            android:layoutDirection="rtl"
+            android:hardwareAccelerated="false"
+            android:roundIcon="@drawable/logo"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            android:usesCleartextTraffic="true"
+            tools:ignore="AllowBackup"
+            tools:replace="android:appComponentFactory"
+
+            android:largeHeap="true"
+
+            tools:targetApi="p">
         <activity
-            android:name="org.fhi360.ddd.SplashScreen"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan">
+                android:name="org.fhi360.ddd.SplashScreen"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
         <activity
-            android:name="org.fhi360.ddd.LoginActivity"
-            android:parentActivityName="org.fhi360.ddd.SplashScreen"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.LoginActivity"
+                android:parentActivityName="org.fhi360.ddd.SplashScreen"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
 
         <activity
-            android:name="org.fhi360.ddd.OutletWelcome"
-            android:parentActivityName="org.fhi360.ddd.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            tools:ignore="LockedOrientationActivity" />
-
-        <activity
-            android:name="org.fhi360.ddd.ServiceSummaryActivity1"
-            android:parentActivityName="org.fhi360.ddd.FacilityRountingReportingPeriod"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.OutletWelcome"
+                android:parentActivityName="org.fhi360.ddd.LoginActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity"/>
 
 
         <activity
-            android:name="org.fhi360.ddd.DiscontinueServiceActivity"
-            android:parentActivityName="org.fhi360.ddd.ClientProfileActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.FacilityActivation"
+                android:parentActivityName="org.fhi360.ddd.LoginActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity"/>
 
 
         <activity
-            android:name="org.fhi360.ddd.test"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.AdminActivation"
+                android:parentActivityName="org.fhi360.ddd.LoginActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.ServiceSummaryActivity1"
+                android:parentActivityName="org.fhi360.ddd.FacilityRountingReportingPeriod"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity"/>
 
 
         <activity
-            android:name="org.fhi360.ddd.InventorySetup"
-            android:parentActivityName="org.fhi360.ddd.FacilityHome"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.DiscontinueServiceActivity"
+                android:parentActivityName="org.fhi360.ddd.ClientProfileActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
 
         <activity
-            android:name="org.fhi360.ddd.CreateFacilityAccount"
-            android:parentActivityName="org.fhi360.ddd.Account"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.test"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.ListDDDClient2"
-            android:parentActivityName="org.fhi360.ddd.InventorySetup"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.InventoryReport"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOption"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.DrugSetup"
-            android:parentActivityName="org.fhi360.ddd.InventorySetup"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.PatientHistory"
+                android:parentActivityName="org.fhi360.ddd.InventoryReport"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme1"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.DrugIssued"
-            android:parentActivityName="org.fhi360.ddd.ListDDDClient2"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-
-
-        <activity
-            android:name="org.fhi360.ddd.ListDDDProfileActivity"
-            android:parentActivityName="org.fhi360.ddd.ListDDDClient"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-
-        <activity
-            android:name="org.fhi360.ddd.ClientProfileActivity2"
-            android:parentActivityName="org.fhi360.ddd.PatientList2"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            tools:ignore="LockedOrientationActivity" />
-
-        <activity
-            android:name="org.fhi360.ddd.CreateOutLetAccount"
-            android:parentActivityName="org.fhi360.ddd.Account"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
-
-        <activity
-            android:name="org.fhi360.ddd.FacilityDashboard"
-            android:parentActivityName="org.fhi360.ddd.ReportHomeOptionFacility"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
-
-        <activity
-            android:name="org.fhi360.ddd.OutletDashboard"
-            android:parentActivityName="org.fhi360.ddd.ReportHomeOption"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
-
-        <activity
-            android:name="org.fhi360.ddd.ClientProfileActivity"
-            android:parentActivityName="org.fhi360.ddd.PatientList"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.InventorySetup"
+                android:parentActivityName="org.fhi360.ddd.AdminHomePage"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
 
         <activity
-            android:name="org.fhi360.ddd.OutletRecievedAndRequest"
-            android:parentActivityName="org.fhi360.ddd.OutletHome"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.AdminListClientNumber"
+                android:parentActivityName="org.fhi360.ddd.AdminListDDDProfileActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
 
         <activity
-            android:name="org.fhi360.ddd.FacilityHome"
-            android:parentActivityName="org.fhi360.ddd.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            tools:ignore="LockedOrientationActivity">
-            <meta-data
+                android:name="org.fhi360.ddd.CreateFacilityAccount"
+                android:parentActivityName="org.fhi360.ddd.Account"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.ListDDDClient2"
+                android:parentActivityName="org.fhi360.ddd.InventorySetup"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme2"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.DrugSetup"
+                android:parentActivityName="org.fhi360.ddd.InventorySetup"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.DrugIssued"
+                android:parentActivityName="org.fhi360.ddd.ListDDDClient2"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity"/>
+
+
+        <activity
+                android:name="org.fhi360.ddd.ListDDDProfileActivity"
+                android:parentActivityName="org.fhi360.ddd.ListDDDClient"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.AdminListDDDProfileActivity"
+                android:parentActivityName="org.fhi360.ddd.AdminListDDDClient"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity"/>
+
+
+        <activity
+                android:name="org.fhi360.ddd.ClientProfileActivity2"
+                android:parentActivityName="org.fhi360.ddd.PatientList2"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity"/>
+
+
+        <activity
+                android:name="org.fhi360.ddd.AdminClientProfileActivity"
+                android:parentActivityName="org.fhi360.ddd.AdminPatientList2"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.AdminEdit"
+                android:parentActivityName="org.fhi360.ddd.AdminPatientList2"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.fhi360.ddd.LoginActivity" />
+                android:value="org.fhi360.ddd.AdminPatientList2"/>
+
+        <activity
+                android:name="org.fhi360.ddd.CreateOutLetAccount"
+                android:parentActivityName="org.fhi360.ddd.Account"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.FacilityDashboard"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOptionFacility"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+
+
+        <activity
+                android:name="org.fhi360.ddd.AdminDashboard"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOptionAdmin"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.OutletDashboard"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOption"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.ClientProfileActivity"
+                android:parentActivityName="org.fhi360.ddd.PatientList"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+
+
+        <activity
+                android:name="org.fhi360.ddd.OutletRecievedAndRequest"
+                android:parentActivityName="org.fhi360.ddd.OutletHome"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+
+
+        <activity
+                android:name="org.fhi360.ddd.FacilityHome"
+                android:parentActivityName="org.fhi360.ddd.LoginActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="org.fhi360.ddd.LoginActivity"/>
         </activity>
 
         <activity
-            android:name="org.fhi360.ddd.OutletHome"
-            android:parentActivityName="org.fhi360.ddd.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen1"
-            tools:ignore="LockedOrientationActivity">
+                android:name="org.fhi360.ddd.AdminHomePage"
+                android:parentActivityName="org.fhi360.ddd.LoginActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.fhi360.ddd.LoginActivity" />
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="org.fhi360.ddd.LoginActivity"/>
+        </activity>
+
+        <activity
+                android:name="org.fhi360.ddd.OutletHome"
+                android:parentActivityName="org.fhi360.ddd.LoginActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen1"
+                tools:ignore="LockedOrientationActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="org.fhi360.ddd.LoginActivity"/>
         </activity>
         <activity
-            android:name="org.fhi360.ddd.RegisterOutLet"
-            android:parentActivityName="org.fhi360.ddd.FacilityHome"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity">
+                android:name="org.fhi360.ddd.RegisterOutLet"
+                android:parentActivityName="org.fhi360.ddd.FacilityHome"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity">
             <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
             </intent-filter>
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.fhi360.ddd.LoginActivity" />
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="org.fhi360.ddd.LoginActivity"/>
         </activity>
 
         <activity
-            android:name="org.fhi360.ddd.NewVisit"
-            android:parentActivityName="org.fhi360.ddd.FacilityHome"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
+                android:name="org.fhi360.ddd.PatientRegistrations"
+                android:parentActivityName="org.fhi360.ddd.FacilityHome"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.fhi360.ddd.FacilityHome" />
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="org.fhi360.ddd.FacilityHome"/>
         </activity>
 
-        <activity
-            android:name="org.fhi360.ddd.PatientList"
-            android:parentActivityName="org.fhi360.ddd.OutletHome"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme1"
-            tools:ignore="LockedOrientationActivity" />
 
         <activity
-            android:name="org.fhi360.ddd.FacilityRountingReportingPeriod"
-            android:parentActivityName="org.fhi360.ddd.FacilityRoutineNationalReport"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.FacilityRountingReportingPeriod"
+                android:parentActivityName="org.fhi360.ddd.FacilityRoutineNationalReport"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.FacilityRountingReportingPeriod1"
-            android:parentActivityName="org.fhi360.ddd.FacilityRoutineNationalReport"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.FacilityRountingReportingPeriod1"
+                android:parentActivityName="org.fhi360.ddd.FacilityRoutineNationalReport"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.ReportingPeriod1"
-            android:parentActivityName="org.fhi360.ddd.OutletRoutineNationalReport"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.ReportingPeriod1"
+                android:parentActivityName="org.fhi360.ddd.OutletRoutineNationalReport"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.ListDDDClient"
-            android:parentActivityName="org.fhi360.ddd.ReportHomeOptionFacility"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.ListDDDClient"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOptionFacility"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme2"
+                tools:ignore="LockedOrientationActivity"/>
 
 
         <activity
-            android:name="org.fhi360.ddd.PatientListServer"
-            android:parentActivityName="org.fhi360.ddd.PatientList"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-
-        <activity
-            android:name="org.fhi360.ddd.ReportHomeOptionFacility"
-            android:parentActivityName="org.fhi360.ddd.FacilityHome"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name="org.fhi360.ddd.ActivityOptionsNewPatient"
-            android:parentActivityName="org.fhi360.ddd.FacilityHome"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name="org.fhi360.ddd.Activation"
-            android:parentActivityName="org.fhi360.ddd.ActivityOptionsNewPatient"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.AdminListDDDClient"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOptionAdmin"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme2"
+                tools:ignore="LockedOrientationActivity"/>
 
 
         <activity
-            android:name="org.fhi360.ddd.SearchResultsActivity"
-            android:parentActivityName="org.fhi360.ddd.FacilityHome"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
+                android:name="org.fhi360.ddd.PatientListServer"
+                android:parentActivityName="org.fhi360.ddd.PatientList"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.ReportHomeOptionFacility"
+                android:parentActivityName="org.fhi360.ddd.FacilityHome"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.ReportHomeOptionAdmin"
+                android:parentActivityName="org.fhi360.ddd.AdminHomePage"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+        <!--        <activity-->
+        <!--            android:name="org.fhi360.ddd.ActivityOptionsNewPatient"-->
+        <!--            android:parentActivityName="org.fhi360.ddd.FacilityHome"-->
+        <!--            android:screenOrientation="portrait"-->
+        <!--            android:windowSoftInputMode="adjustPan"-->
+        <!--            tools:ignore="LockedOrientationActivity" />-->
+
+
+        <activity
+                android:name="org.fhi360.ddd.SearchResultsActivity"
+                android:parentActivityName="org.fhi360.ddd.FacilityHome"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity">
 
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
         </activity>
 
 
         <activity
-            android:name="org.fhi360.ddd.ServiceSummaryActivity"
-            android:parentActivityName="org.fhi360.ddd.ReportingPeriod1"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.ServiceSummaryActivity"
+                android:parentActivityName="org.fhi360.ddd.ReportingPeriod1"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.FacilityRoutineNationalReport"
-            android:parentActivityName="org.fhi360.ddd.ReportHomeOptionFacility"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.FacilityRoutineNationalReport"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOptionFacility"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.ReportingPeriod"
-            android:parentActivityName="org.fhi360.ddd.OutletRoutineNationalReport"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.HomeRoutineNationalReport"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOptionAdmin"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.ReportHomeOption"
-            android:parentActivityName="org.fhi360.ddd.OutletHome"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name="org.fhi360.ddd.Account"
-            android:parentActivityName="org.fhi360.ddd.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.ReportingPeriod"
+                android:parentActivityName="org.fhi360.ddd.OutletRoutineNationalReport"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.ServiceSummaryFacilityNational"
-            android:parentActivityName="org.fhi360.ddd.FacilityRoutineNationalReport"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.ReportHomeOption"
+                android:parentActivityName="org.fhi360.ddd.OutletHome"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+        <activity
+                android:name="org.fhi360.ddd.Account"
+                android:parentActivityName="org.fhi360.ddd.LoginActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.ServiceSummaryActivity2"
-            android:parentActivityName="org.fhi360.ddd.ReportingPeriod"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.ServiceSummaryFacilityNational"
+                android:parentActivityName="org.fhi360.ddd.FacilityRoutineNationalReport"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme2"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.OutletRoutineNationalReport"
-            android:parentActivityName="org.fhi360.ddd.ReportHomeOption"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
-
-
-        <activity
-            android:name="org.fhi360.ddd.ARVRefill"
-            android:parentActivityName="org.fhi360.ddd.ClientProfileActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.ServiceSummaryActivity2"
+                android:parentActivityName="org.fhi360.ddd.ReportingPeriod"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.FacilityWelcome"
-            android:parentActivityName="org.fhi360.ddd.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name="org.fhi360.ddd.PatientList2"
-            android:parentActivityName="org.fhi360.ddd.ReportHomeOptionFacility"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2"
-            tools:ignore="LockedOrientationActivity" />
-
-        <activity
-            android:name="org.fhi360.ddd.DefaulterListActivity"
-            android:parentActivityName="org.fhi360.ddd.ReportHomeOptionFacility"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name="org.fhi360.ddd.DefaulterListActivity1"
-            android:parentActivityName="org.fhi360.ddd.ReportHomeOption"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme1"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.OutletRoutineNationalReport"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOption"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
 
         <activity
-            android:name="org.fhi360.ddd.SearchARVActivity"
-            android:parentActivityName="org.fhi360.ddd.ClientProfileActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme1"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.ARVRefill"
+                android:parentActivityName="org.fhi360.ddd.ClientProfileActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
 
         <activity
-            android:name="org.fhi360.ddd.ClientTrackingActivity2"
-            android:parentActivityName="org.fhi360.ddd.DefaulterListActivity1"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.FacilityWelcome"
+                android:parentActivityName="org.fhi360.ddd.LoginActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity"/>
+        <activity
+                android:name="org.fhi360.ddd.PatientList2"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOptionFacility"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme2"
+                tools:ignore="LockedOrientationActivity"/>
+
 
         <activity
-            android:name="org.fhi360.ddd.ClientTrackingActivity"
-            android:parentActivityName="org.fhi360.ddd.DefaulterListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
+                android:name="org.fhi360.ddd.AdminPatientList2"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOptionAdmin"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme2"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.AdminPatientList3"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOptionAdmin"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme2"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.DefaulterListActivity"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOptionFacility"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme2"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+        <activity
+                android:name="org.fhi360.ddd.AdminDefaulterListActivity"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOptionAdmin"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme2"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.DefaulterListActivity1"
+                android:parentActivityName="org.fhi360.ddd.ReportHomeOption"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme1"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+
+
+        <activity
+                android:name="org.fhi360.ddd.SearchARVActivity"
+                android:parentActivityName="org.fhi360.ddd.OutletHome"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme1"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.ClientTrackingActivity2"
+                android:parentActivityName="org.fhi360.ddd.DefaulterListActivity1"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.PatientList"
+                android:parentActivityName="org.fhi360.ddd.OutletHome"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                tools:ignore="LockedOrientationActivity"/>
+        <activity
+                android:name="org.fhi360.ddd.ClientTrackingActivity"
+                android:parentActivityName="org.fhi360.ddd.DefaulterListActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+
+        <activity
+                android:name="org.fhi360.ddd.AdminClientTrackingActivity"
+                android:parentActivityName="org.fhi360.ddd.AdminDefaulterListActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.FullScreen"
+                android:windowSoftInputMode="adjustPan"
+                tools:ignore="LockedOrientationActivity"/>
+
 
         <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="org.fhi360.ddd.fileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true"
-            android:readPermission="org.fhi360.ddd.READ_CONTENT"
-            android:writePermission="org.fhi360.ddd.WRITE_CONTENT">
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="org.fhi360.ddd.fileProvider"
+                android:exported="false"
+                android:grantUriPermissions="true"
+                android:readPermission="org.fhi360.ddd.READ_CONTENT"
+                android:writePermission="org.fhi360.ddd.WRITE_CONTENT">
             <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/provider_paths"/>
         </provider>
     </application>
 

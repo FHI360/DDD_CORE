@@ -2,53 +2,35 @@ package org.fhi360.ddd;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.gson.Gson;
 import com.shashank.sony.fancytoastlib.FancyToast;
-
 import org.fhi360.ddd.Db.DDDDb;
-import org.fhi360.ddd.R;
-import org.fhi360.ddd.domain.Account;
 import org.fhi360.ddd.domain.Drug;
 import org.fhi360.ddd.domain.IssuedDrug;
+import org.fhi360.ddd.domain.Pharmacy;
+import org.fhi360.ddd.dto.Response;
+import org.fhi360.ddd.webservice.APIService;
+import org.fhi360.ddd.webservice.ClientAPI;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static org.fhi360.ddd.util.Constants.PREFERENCES_ENCOUNTER;
 
 
 public class test extends AppCompatActivity {
     private TextView noOfPatient;
-    private Account account;
+    private Pharmacy account;
     private View view1, view2, view3, view4, view5, view6;
     private LinearLayout layout1, layout2, layout3, layout4, layout5, layout6;
     private EditText quantity, basicUnit, batchNumber, expireDate;
@@ -67,7 +49,7 @@ public class test extends AppCompatActivity {
         restorePreferences();
         if (savedInstanceState != null) {
             String json = savedInstanceState.getString("account");
-            account = new Gson().fromJson(json, Account.class);
+            account = new Gson().fromJson(json, Pharmacy.class);
         }
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +69,7 @@ public class test extends AppCompatActivity {
         drugName = findViewById(R.id.drugName);
         quantity = findViewById(R.id.quantity);
         button = findViewById(R.id.register);
-        name.setText(account.getPharmacy().toUpperCase());
+        name.setText(account.getName().toUpperCase());
 
         view3 = findViewById(R.id.view3);
         view4 = findViewById(R.id.view4);
@@ -109,21 +91,21 @@ public class test extends AppCompatActivity {
         layout3.setVisibility(View.INVISIBLE);
         layout4.setVisibility(View.INVISIBLE);
         layout5.setVisibility(View.INVISIBLE);
+        final ArrayList regimenId = new ArrayList();
         final ArrayList drugId = new ArrayList();
-        drugId.add(0, 0);
         ArrayList drugNames = new ArrayList();
-        drugNames.add(0, "");
+
 
         List<Drug> drugs = DDDDb.getInstance(this).drugRepository().findByAll();
         for (Drug drug : drugs) {
+            System.out.println("DRUG " + drug);
             drugId.add(drug.getId());
+            regimenId.add(drug.getRegimeId());
             drugNames.add(drug.getDrugName());
-
         }
-
-
-        int count = DDDDb.getInstance(this).patientRepository().count(account.getPinCode());
-        noOfPatient.setText("Number of patient " + count);
+        System.out.println("USER ID " + account.getId());
+        int count = DDDDb.getInstance(this).patientRepository().count(account.getId());
+        noOfPatient.setText("Number of patient(s): " + count);
         final ArrayAdapter drug = new ArrayAdapter<>(test.this,
                 R.layout.support_simple_spinner_dropdown_item, drugNames);
         drugName.setAdapter(drug);
@@ -131,9 +113,10 @@ public class test extends AppCompatActivity {
         drugName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                int drug1 = (int) drugId.get(position);
-                if(drug1!=0){
-                    savePin(drug1 + "");
+                Long regimenId1 = (Long) regimenId.get(position);
+                Integer drug1 = (Integer) drugId.get(position);
+                if (regimenId1 != 0) {
+                    savePin(regimenId1 + "");
                     Drug drug2 = DDDDb.getInstance(getApplicationContext()).drugRepository().findOne(drug1);
                     basicUnit.setText(drug2.getBasicUnit());
                     view3.setVisibility(View.VISIBLE);
@@ -145,7 +128,7 @@ public class test extends AppCompatActivity {
                     layout3.setVisibility(View.VISIBLE);
                     layout4.setVisibility(View.VISIBLE);
                     layout5.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     view3.setVisibility(View.INVISIBLE);
                     view4.setVisibility(View.INVISIBLE);
                     view4.setVisibility(View.INVISIBLE);
@@ -187,40 +170,91 @@ public class test extends AppCompatActivity {
                 final DatePickerDialog mDatePicker = new DatePickerDialog(test.this, dateLastClinic1, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH));
-                mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
                 mDatePicker.show();
             }
         });
 
 
         button.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
+                HashMap<String, String> regId = getId();
+                Long id = Long.valueOf(regId.get("id"));
+////MM/dd/yyyy
                 String basicUnit1 = basicUnit.getText().toString();
                 String expireDate1 = expireDate.getText().toString();
                 String batchNumber1 = batchNumber.getText().toString();
-                String id = drugName.getSelectedItem().toString();
                 String quantity1 = quantity.getText().toString();
-                if (validateInput(basicUnit1, expireDate1, batchNumber1, quantity1)) {
+                IssuedDrug drug = DDDDb.getInstance(test.this).drugIssuedRepository().findByAllBYId(id, account.getPin());
+                if (drug != null) {
                     IssuedDrug issuedDrug = new IssuedDrug();
                     issuedDrug.setBatchNumber(batchNumber1);
-                    issuedDrug.setDrugId(id);
-                    issuedDrug.setPinCode(account.getPinCode());
+                    issuedDrug.setRegimenId(id);
+                    issuedDrug.setPinCode(account.getPin());
                     issuedDrug.setExpireDate(expireDate1);
-                    issuedDrug.setQuantity(quantity1);
+                    issuedDrug.setId(drug.getId());
+                    issuedDrug.setQuantity(Double.parseDouble(quantity1));
                     DDDDb.getInstance(getApplicationContext()).drugIssuedRepository().save(issuedDrug);
-                    FancyToast.makeText(getApplicationContext(), "Drug issued successfully", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                    save(issuedDrug);
+                    FancyToast.makeText(getApplicationContext(), "Inventory updated", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
 
+                } else {
+
+                    if (validateInput(basicUnit1, expireDate1, batchNumber1, quantity1)) {
+                        IssuedDrug issuedDrug = new IssuedDrug();
+                        issuedDrug.setBatchNumber(batchNumber1);
+                        issuedDrug.setRegimenId(id);
+                        issuedDrug.setPinCode(account.getPin());
+                        issuedDrug.setExpireDate(expireDate1);
+                        issuedDrug.setQuantity(Double.parseDouble(quantity1));
+                        DDDDb.getInstance(getApplicationContext()).drugIssuedRepository().save(issuedDrug);
+                        save(issuedDrug);
+                        FancyToast.makeText(getApplicationContext(), "Inventory Saved", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+
+                    }
                 }
             }
         });
 
     }
 
+    private void save(IssuedDrug issuedDrug) {
+        ProgressDialog progressdialog = new ProgressDialog(this);
+        progressdialog.setMessage("Saving drug");
+        progressdialog.setCancelable(false);
+        progressdialog.setIndeterminate(false);
+        progressdialog.setMax(100);
+        progressdialog.show();
+        ClientAPI clientAPI = APIService.createService(ClientAPI.class);
+        Call<Response> objectCall = clientAPI.saveInventory(issuedDrug);
+        objectCall.enqueue(new Callback<Response>() {
+            @SuppressLint("SimpleDateFormat")
+            @Override
+            public void onResponse(Call<org.fhi360.ddd.dto.Response> call, retrofit2.Response<Response> response) {
+                if (response.isSuccessful()) {
+                    progressdialog.dismiss();
+                } else {
+                    FancyToast.makeText(getApplicationContext(), "Contacter l'administrateur système", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                    progressdialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<org.fhi360.ddd.dto.Response> call, Throwable t) {
+                t.printStackTrace();
+                FancyToast.makeText(getApplicationContext(), "Pas de connexion Internet", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                progressdialog.dismiss();
+            }
+
+        });
+
+    }
 
     private void restorePreferences() {
         String json = preferences.getString("account", "");
-        account = new Gson().fromJson(json, Account.class);
+        account = new Gson().fromJson(json, Pharmacy.class);
     }
 
     public void savePin(String drugid) {
@@ -239,7 +273,7 @@ public class test extends AppCompatActivity {
     }
 
     private void updateDate() {
-        String myFormat = "yyyy-MM-dd"; //In which you need put here
+        String myFormat = "MM/dd/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         expireDate.setText(sdf.format(myCalendar.getTime()));
 
@@ -247,20 +281,20 @@ public class test extends AppCompatActivity {
 
     private boolean validateInput(String basicUnit1, String expired1, String batchNumber1, String qty) {
         if (basicUnit1.isEmpty()) {
-            basicUnit.setError("basic unit can not be empty");
+            basicUnit.setError("basic Unit can't be empty");
             return false;
 
 
         } else if (expired1.isEmpty()) {
-            expireDate.setError("Expire date can not be empty");
+            expireDate.setError("expire date can't be empty");
             return false;
 
         } else if (batchNumber1.isEmpty()) {
-            batchNumber.setError("Batch Number can not be empty");
+            batchNumber.setError("batch number unit can't be empty");
             return false;
 
         } else if (qty.isEmpty()) {
-            quantity.setError("Quantity can not be empty");
+            quantity.setError("quantity can't be empty");
             return false;
 
         }

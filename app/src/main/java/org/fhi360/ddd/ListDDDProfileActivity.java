@@ -10,9 +10,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,27 +18,23 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import org.fhi360.ddd.Db.DDDDb;
-import org.fhi360.ddd.R;
 
 import com.google.gson.Gson;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
-import org.fhi360.ddd.domain.Account;
+import org.fhi360.ddd.domain.Pharmacy;
 
 import org.fhi360.ddd.util.CSVWriter;
-import org.fhi360.ddd.util.DateUtil;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import static org.fhi360.ddd.util.Constants.PREFERENCES_ENCOUNTER;
 
 public class ListDDDProfileActivity extends AppCompatActivity {
-    private Account account;
+    private Pharmacy account;
     private boolean INITIAL = true;
     private SharedPreferences preferences;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -58,9 +52,9 @@ public class ListDDDProfileActivity extends AppCompatActivity {
         restorePreferences();
         if (savedInstanceState != null) {
             String json = savedInstanceState.getString("account");
-            account = new Gson().fromJson(json, Account.class);
+            account = new Gson().fromJson(json, Pharmacy.class);
         }
-        String name = account.getPharmacy();
+        String name = account.getName();
         ((TextView) findViewById(R.id.name)).setText(name);
 
         ((TextView) findViewById(R.id.email)).setText(account.getEmail());
@@ -87,12 +81,12 @@ public class ListDDDProfileActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         String json = savedInstanceState.getString("account");
-        account = new Gson().fromJson(json, Account.class);
+        account = new Gson().fromJson(json, Pharmacy.class);
     }
 
     private void restorePreferences() {
         String json = preferences.getString("account", "");
-        account = new Gson().fromJson(json, Account.class);
+        account = new Gson().fromJson(json, Pharmacy.class);
     }
 
 

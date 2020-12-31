@@ -19,10 +19,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+
 import org.fhi360.ddd.R;
 
 import org.fhi360.ddd.Db.DDDDb;
 import org.fhi360.ddd.adapter.DefaulterListAdapter;
+import org.fhi360.ddd.domain.ARV;
 import org.fhi360.ddd.domain.Patient;
 
 import java.util.List;
@@ -71,14 +73,15 @@ public class DefaulterListActivity1 extends AppCompatActivity {
         }
 
         defaulterListView = findViewById(R.id.defaulterlistView);
-        patients = DDDDb.getInstance(this).patientRepository().findByAll();
 
+        patients = DDDDb.getInstance(this).patientRepository().getDefaulter();
         adapter = new DefaulterListAdapter(this, patients);
         defaulterListView.setAdapter(adapter);
         defaulterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                savePreferences(patients.get(position));
+                Patient patient = DDDDb.getInstance(getApplicationContext()).patientRepository().findByPatient(patients.get(position).getId());
+                savePreferences(patient);
                 Intent intent = new Intent(getApplicationContext(), ClientTrackingActivity2.class);
                 startActivity(intent);
             }
@@ -159,27 +162,16 @@ public class DefaulterListActivity1 extends AppCompatActivity {
         }
 
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            refreshListView(s);
+
         }
     };
-
-    public void refreshListView(CharSequence s) {
-        if (!s.toString().equals("")) {
-            long period = 28 * 24 * 60 * 60 * 1000;
-            patients = DDDDb.getInstance(this).patientRepository().getDefaulters(Long.toString(period), s.toString());
-        } else {
-            patients = DDDDb.getInstance(this).patientRepository().getDefaulters();
-        }
-        adapter = new DefaulterListAdapter(this, patients);
-        defaulterListView.setAdapter(adapter);
-    }
 
     private void savePreferences(Patient patient) {
         preferences = getSharedPreferences(PREFERENCES_ENCOUNTER, 0);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("patient", new Gson().toJson(patient));
         editor.putBoolean("edit_mode", false);
-        editor.commit();
+        editor.apply();
 
     }
 }

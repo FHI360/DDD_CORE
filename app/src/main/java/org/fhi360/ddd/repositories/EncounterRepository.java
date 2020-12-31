@@ -17,10 +17,10 @@ public interface EncounterRepository {
     List<Encounter> findByAll();
 
     @Query("SELECT * FROM encounter where  patient_id = :patientId AND  strftime('%M',date_visit) = :month AND strftime('%Y',date_visit) = :year AND regimen3 != ''")
-    boolean findByCotrim(int patientId, int month, int year);
+    boolean findByCotrim(Long patientId, int month, int year);
 
     @Query("SELECT * FROM encounter WHERE facility_id =:facilityId  AND patient_id =:patientId  ORDER BY date_visit DESC LIMIT 1")
-    Encounter getLastEncounter(int facilityId,int patientId);
+    Encounter getLastEncounter(Long facilityId,Long patientId);
     @Insert
     void save(Devolve devolve);
 

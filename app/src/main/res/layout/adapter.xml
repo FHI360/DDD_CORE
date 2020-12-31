@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardView"
+    app:cardUseCompatPadding="true"
     android:layout_width="match_parent"
-    android:layout_height="400dp"
-    android:layout_gravity="center"
-    android:innerRadius="0dp"
-    android:shape="rectangle"
-    android:fitsSystemWindows="true"
-    app:cardCornerRadius="20dp"
-    app:cardUseCompatPadding="true">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -28,8 +24,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="First Visit"
-                android:textSize="15dp"
+                android:layout_marginTop="30dp"
+                android:text="@string/first_visit"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -42,11 +39,9 @@
 
             <TextView
                 android:id="@+id/contentTextView"
-                style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
                 android:textAlignment="center" />
 
             <Button
@@ -56,7 +51,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/background_button_accent"
-                android:text="Check Assigned Clients"
+                android:text="@string/check_assigned_clients"
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -66,7 +61,6 @@
             android:layout_gravity="top|end"
             android:layout_marginTop="-5dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:src="@drawable/ic_bookmark_24dp" />
 
     </FrameLayout>

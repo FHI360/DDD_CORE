@@ -22,17 +22,21 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.gson.Gson;
 
 import org.fhi360.ddd.ClientProfileActivity2;
+import org.fhi360.ddd.Db.DDDDb;
 import org.fhi360.ddd.R;
 import org.fhi360.ddd.ClientProfileActivity;
+import org.fhi360.ddd.domain.Facility;
 import org.fhi360.ddd.domain.Patient;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import static org.fhi360.ddd.util.Constants.PREFERENCES_ENCOUNTER;
 
-
+//12-07-2022
 public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecyclerAdapter.ViewHolder> {
     //These variables will hold the data for the views
     private List<Patient> patientList;
@@ -96,23 +100,12 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
 
         TextView facilityView = cardView.findViewById(R.id.facility_name);
         TextView dateRegistration = cardView.findViewById(R.id.dateText);
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         dateRegistration.setText(patientList.get(position).getDateNextRefill());
-        // TextView starIcon = cardView.findViewById(R.id.starIcon);
-
-//        if (patientList.get(position).getStatus()==0) {
-//            TextDrawable drawable = TextDrawable.builder()
-//                    .buildRound("Manual", Color.RED);
-//            starIcon.setImageDrawable(drawable);
-//        }
-//        if (patientList.get(position).getStatus()==1) {
-//            TextDrawable drawable = TextDrawable.builder()
-//                    .buildRound("Server", Color.BLUE);
-//            starIcon.setImageDrawable(drawable);
-//        }
-
+        System.out.println("FacilityId " + patientList.get(position).getFacilityId());
+//        Facility facilityName = DDDDb.getInstance(context).facilityRepository().findOne(patientList.get(position).getFacilityId());
+//        //if (facilityName != null) {
         facilityView.setText(patientList.get(position).getFacilityName());
-
+//      //  }
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

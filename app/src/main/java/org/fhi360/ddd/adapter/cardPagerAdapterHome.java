@@ -6,49 +6,49 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.os.CountDownTimer;
 import android.provider.Settings;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.shashank.sony.fancytoastlib.FancyToast;
 
+import org.fhi360.ddd.*;
 import org.fhi360.ddd.Db.DDDDb;
-import org.fhi360.ddd.OutletHome;
-import org.fhi360.ddd.OutletRecievedAndRequest;
-import org.fhi360.ddd.PatientList;
-import org.fhi360.ddd.R;
-import org.fhi360.ddd.ReportHomeOption;
+import org.fhi360.ddd.domain.ARV;
 import org.fhi360.ddd.domain.CardItem;
+import org.fhi360.ddd.domain.District;
+import org.fhi360.ddd.domain.Facility;
+import org.fhi360.ddd.domain.Patient;
+import org.fhi360.ddd.domain.Pharmacy;
+import org.fhi360.ddd.domain.Regimen;
+import org.fhi360.ddd.domain.State;
+import org.fhi360.ddd.dto.Data;
+import org.fhi360.ddd.dto.Data2;
+import org.fhi360.ddd.dto.PatientDto;
+import org.fhi360.ddd.dto.Response;
 import org.fhi360.ddd.domain.User;
-import org.fhi360.ddd.util.DateUtil;
 import org.fhi360.ddd.util.PrefManager;
-import org.fhi360.ddd.webservice.HttpGetRequest;
-import org.fhi360.ddd.webservice.HttpPostRequest;
-import org.fhi360.ddd.webservice.WebserviceResponseHandler;
-import org.fhi360.ddd.webservice.WebserviceResponseServerHandler;
+import org.fhi360.ddd.webservice.APIService;
+import org.fhi360.ddd.webservice.ClientAPI;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class cardPagerAdapterHome extends PagerAdapter implements CardAdapter {
 
@@ -58,7 +58,8 @@ public class cardPagerAdapterHome extends PagerAdapter implements CardAdapter {
     private Context context;
     private EditText otp_view;
     private ProgressDialog progressDialog;
-    String serverUrl = null;
+
+    private ProgressDialog mPb;
 
     public cardPagerAdapterHome() {
         mData = new ArrayList<>();
@@ -109,7 +110,7 @@ public class cardPagerAdapterHome extends PagerAdapter implements CardAdapter {
         if (position == 0) {
             imageView.setImageResource(R.drawable.firsttimevisit);
             assigined.setBackgroundResource(R.drawable.background_button_accent);
-            assigined.setText("Check Assigned Clients");
+            assigined.setText("More");
             assigined.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -118,9 +119,9 @@ public class cardPagerAdapterHome extends PagerAdapter implements CardAdapter {
             });
         }
         if (position == 1) {
-            assigined.setText("Click More");
+            assigined.setText("More");
             imageView.setImageResource(R.drawable.revisit);
-            assigined.setBackgroundResource(R.drawable.background_button_accent1);
+            assigined.setBackgroundResource(R.drawable.background_button_accent);
             assigined.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -129,7 +130,7 @@ public class cardPagerAdapterHome extends PagerAdapter implements CardAdapter {
                 }
             });
         }
-
+//
         if (position == 2) {
             imageView.setImageResource(R.drawable.inventorymgticon);
             assigined.setText("Click More");
@@ -137,15 +138,15 @@ public class cardPagerAdapterHome extends PagerAdapter implements CardAdapter {
             assigined.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, OutletRecievedAndRequest.class);
+                    Intent intent = new Intent(context, SearchARVActivity.class);
                     context.startActivity(intent);
                 }
             });
         }
         if (position == 3) {
             imageView.setImageResource(R.drawable.reporticon);
-            assigined.setText("Click More");
-            assigined.setBackgroundResource(R.drawable.background_button_accent3);
+            assigined.setText("More");
+            assigined.setBackgroundResource(R.drawable.background_button_accent);
             assigined.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -155,24 +156,21 @@ public class cardPagerAdapterHome extends PagerAdapter implements CardAdapter {
             });
 
         }
-        if (position == 4) {
-            assigined.setText("Click More");
-            imageView.setImageResource(R.drawable.synchronizeicon);
-            assigined.setBackgroundResource(R.drawable.background_button_accent3);
-            assigined.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    progressDialog = new ProgressDialog(context);
-                    progressDialog.setMessage("App Synchronization with Server in Progress...");
-                    progressDialog.setCancelable(false);
-                    progressDialog.setIndeterminate(false);
-                    progressDialog.setMax(100);
-                    progressDialog.show();
-                    countDownTimer.start();
+//        if (position == 3) {
+//            assigined.setText("More");
+//            imageView.setImageResource(R.drawable.synchronizeicon);
+//            assigined.setBackgroundResource(R.drawable.background_button_accent3);
+//            assigined.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//               List<ARV>  arvList =   DDDDb.getInstance(context).arvRefillRepository().findAll();
+//               for(ARV arv : arvList){
+//                   update(arv.getDateNextRefill(),arv.getPatient().getId());
+//               }
+//                }
+//            });
 
-                }
-            });
-        }
 
         cardView.setMaxCardElevation(mBaseElevation * MAX_ELEVATION_FACTOR);
         mViews.set(position, cardView);
@@ -185,17 +183,6 @@ public class cardPagerAdapterHome extends PagerAdapter implements CardAdapter {
         mViews.set(position, null);
     }
 
-    private CountDownTimer countDownTimer = new CountDownTimer(10000, 100) {
-        public void onTick(long millisUntilFinished) {
-            progressDialog.setProgress(Math.abs((int) millisUntilFinished / 100 - 100));
-        }
-
-        @Override
-        public void onFinish() {
-            FancyToast.makeText(context, "Sync Was successful", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
-            progressDialog.dismiss();
-        }
-    };
 
     public HashMap<String, String> get() {
         HashMap<String, String> name = new HashMap<>();
@@ -206,8 +193,8 @@ public class cardPagerAdapterHome extends PagerAdapter implements CardAdapter {
 
 
     private void bind(CardItem item, View view) {
-        TextView titleTextView = (TextView) view.findViewById(R.id.titleTextView);
-        TextView contentTextView = (TextView) view.findViewById(R.id.contentTextView);
+        TextView titleTextView = view.findViewById(R.id.titleTextView);
+        TextView contentTextView = view.findViewById(R.id.contentTextView);
 
         titleTextView.setText(item.getTitle());
         contentTextView.setText(item.getText());
@@ -225,8 +212,8 @@ public class cardPagerAdapterHome extends PagerAdapter implements CardAdapter {
         notitoptxt = promptsView.findViewById(R.id.notitoptxt);
         otp_view = promptsView.findViewById(R.id.otp_view);
         activate = promptsView.findViewById(R.id.activate_button);
+        CheckBox downloadCheckbox = (CheckBox) promptsView.findViewById(R.id.download_checkbox);
         cancel_action = promptsView.findViewById(R.id.cancel_action);
-        serverUrl = context.getResources().getString(R.string.server_url);
         cancel_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -236,31 +223,15 @@ public class cardPagerAdapterHome extends PagerAdapter implements CardAdapter {
         activate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateInput(otp_view.getText().toString())) {
-                    String pin = "la0019F2228";
-                    otp_view.getText().toString();
-                    @SuppressLint("HardwareIds")
+                //  boolean bol = validateInput(otp_view.getText().toString());
+                if (downloadCheckbox.isChecked()) {
+                    Pharmacy pin2 = DDDDb.getInstance(context).pharmacistAccountRepository().findbyOne();
                     String deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-                    String accountUserName = "";
-                    String accountPassword = "";
-                    User usernameAndPasswords = DDDDb.getInstance(context).userRepository().findByOne();
-                    if (usernameAndPasswords != null) {
-                        accountUserName = usernameAndPasswords.getUsername();
-                        accountPassword = usernameAndPasswords.getPassword();
-                    }
-                    if (pin.contains("F")) {
-                        String url = "resources/webservice/mobile/activate/" + "fhi360" + "/" + pin + "/" + deviceId + "/" + accountUserName + "/" + accountPassword;
-                        activate1("GET", url);
-                        Intent intent = new Intent(context, PatientList.class);
-                        context.startActivity(intent);
-                    } else if (pin.contains("DD")) {
-                        String url = "api/hts/mobile/dd/activate/" + pin + "/" + deviceId + "/" + accountUserName + "/" + accountPassword;
-                        activate("GET", url);
-
-                    }
-
+                    User user = DDDDb.getInstance(context).userRepository().findByOne();
+                    getPatient(deviceId, pin2.getPin(), user.getUsername(), user.getPassword());
+                } else {
+                    FancyToast.makeText(context, "Check Box can't be empty", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                 }
-                new PrefManager(context).saveIpAddress(notitoptxt.getText().toString());
                 dialog.dismiss();
             }
 
@@ -272,117 +243,175 @@ public class cardPagerAdapterHome extends PagerAdapter implements CardAdapter {
     }
 
 
-    public void activate1(String method, String url) {
-        //Create a progress dialog window
-        progressDialog = new ProgressDialog(context);
-        //Close window on pressing the back button
-        progressDialog.setCancelable(false);
-        //Set a message
-        progressDialog.setMessage("Please wait activation in progress.....");
-        progressDialog.show();
-        url = serverUrl + url;
-        new WebserviceInvocator1(context).execute(method, url);
-    }
+    private void getPatient(String deviceId, String pin, String accountUserName, String accountPassword) {
+        mPb = new ProgressDialog(context);
+        mPb.setProgress(0);
+        mPb.setMessage("Uploading data please wait...");
+        mPb.setCancelable(false);
+        mPb.setIndeterminate(false);
+        mPb.setProgress(0);
+        mPb.setMax(100);
+        mPb.show();
+        @SuppressLint("HardwareIds")
 
-    public void activate(String method, String url) {
-        //Create a progress dialog window
-        progressDialog = new ProgressDialog(context);
-        //Close window on pressing the back button
-        progressDialog.setCancelable(false);
-        //Set a message
-        progressDialog.setMessage("Please wait activation in progress.....");
-        progressDialog.show();
-        url = serverUrl + url;
-        Log.v("URL", url);
-        new WebserviceInvocator(context).execute(method, url);
-    }
+        ClientAPI clientAPI = APIService.createService(ClientAPI.class);
+        Call<Data2> objectCall = clientAPI.downLoad(deviceId, pin, accountUserName, accountPassword);
+        objectCall.enqueue(new Callback<Data2>() {
+            @Override
+            public void onResponse(@NonNull Call<Data2> call, @NonNull retrofit2.Response<Data2> response) {
+                if (response.isSuccessful()) {
+                    List<PatientDto> patientDtoList = Objects.requireNonNull(response.body()).getPatients();
+                    for (PatientDto patientDto : patientDtoList) {
+                        Patient patient = new Patient();
+                        patient.setId(patientDto.getId());
+                        patient.setHospitalNum(patientDto.getHospitalNum());
+                        patient.setFacilityId(patientDto.getFacility().getId());
+                        patient.setUniqueId(patientDto.getUniqueId());
+                        patient.setFacilityName(patientDto.getFacility().getName());
+                        patient.setSurname(patientDto.getSurname());
+                        patient.setOtherNames(patientDto.getOtherNames());
+                        patient.setGender(patientDto.getGender());
+                        patient.setDateBirth(patientDto.getDateBirth());
+                        patient.setAddress(patientDto.getAddress());
+                        patient.setPhone(patientDto.getPhone());
+                        patient.setDateStarted(patientDto.getDateStarted());
+                        patient.setLastClinicStage(patientDto.getLastClinicStage());
+                        patient.setLastViralLoad(patientDto.getLastViralLoad());
+                        patient.setDateLastViralLoad(patientDto.getDateLastViralLoad());
+                        patient.setViralLoadDueDate(patientDto.getViralLoadDueDate());
+                        patient.setViralLoadType(patientDto.getViralLoadType());
+                        patient.setDateLastClinic(patientDto.getDateLastClinic());
+                        patient.setDateNextClinic(patientDto.getDateNextClinic());
+                        patient.setDateLastRefill(patientDto.getDateLastRefill());
+                        patient.setDateNextRefill(patientDto.getDateNextRefill());
+                        patient.setPharmacyId(patientDto.getPharmacyId());
+                        patient.setUuid(patientDto.getUuid());
+                        if (DDDDb.getInstance(context).patientRepository().findOne(patientDto.getId()) != null) {
+                            DDDDb.getInstance(context).patientRepository().updateUsers(patient);
+                            Intent intent = new Intent(context, PatientList.class);
+                            context.startActivity(intent);
+                            mPb.hide();
+                            FancyToast.makeText(context, "Records Successfully downloaded", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
 
-    //Perform network access on a different thread from the UI thread using AsyncTask`
-    private class WebserviceInvocator extends AsyncTask<String, Void, String> {
-        Context context;
+                        } else {
+                            DDDDb.getInstance(context).patientRepository().save(patient);
+                            Intent intent = new Intent(context, PatientList.class);
+                            context.startActivity(intent);
+                            mPb.hide();
+                            FancyToast.makeText(context, "Records Successfully downloaded", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
 
-        WebserviceInvocator(Context context) {
-            this.context = context;
-        }
+                        }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+                    }
+                    DDDDb.getInstance(context).facilityRepository().delete();
+                    Facility facility = Objects.requireNonNull(response.body()).getFacility();
+                    facility.setId(Objects.requireNonNull(response.body()).getFacility().getId());
+                    DDDDb.getInstance(context).facilityRepository().save(facility);
 
-        @Override
-        protected String doInBackground(String... params) {
-            String result = "";
-            String method = params[0];
-            if (method.equalsIgnoreCase("POST"))
-                result = new HttpPostRequest(context).postData(params[1], params[2]);
+                    DDDDb.getInstance(context).regimenRepository().delete();
+                    List<Regimen> regimen = response.body().getRegimens();
+                    for (Regimen regimen1 : regimen) {
+                        Regimen regimen2 = new Regimen();
+                        regimen2.setId(regimen1.getId());
+                        regimen2.setName(regimen1.getName());
+                        regimen2.setRegimenTypeId(regimen1.getRegimenTypeId());
+                        regimen2.setBatchNumber(regimen1.getBatchNumber());
+                        regimen2.setQuantity(regimen1.getQuantity());
+                        regimen2.setExpireDate(regimen1.getExpireDate());
+                        DDDDb.getInstance(context).regimenRepository().save(regimen2);
+                    }
 
-            if (method.equalsIgnoreCase("GET"))
-                result = new HttpGetRequest(context).getData(params[1]);
-            progressDialog.dismiss();
-            return result;
-        }
+                    Intent intent = new Intent(context, PatientList.class);
+                    context.startActivity(intent);
+                    mPb.hide();
+                    FancyToast.makeText(context, "Records Successfully downloaded", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
 
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            if (!result.isEmpty()) {
+                } else {
+                    mPb.hide();
+                    FancyToast.makeText(context, "DDD can't get patient records", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
 
-                new WebserviceResponseHandler(context).parseResult(result);
-                Intent intent = new Intent(context, PatientList.class);
-                context.startActivity(intent);
-                ;
-                progressDialog.dismiss();
-            } else {
-                FancyToast.makeText(context, "Error while activating, Check your internet connection", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
-                progressDialog.dismiss();
+                }
+
+
             }
-        }
-    }
 
-
-    //Perform network access on a different thread from the UI thread using AsyncTask`
-    private class WebserviceInvocator1 extends AsyncTask<String, Void, String> {
-        Context context;
-
-        WebserviceInvocator1(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String result = "";
-            String method = params[0];
-            if (method.equalsIgnoreCase("POST"))
-                result = new HttpPostRequest(context).postData(params[1], params[2]);
-
-            if (method.equalsIgnoreCase("GET"))
-                result = new HttpGetRequest(context).getData(params[1]);
-            progressDialog.dismiss();
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            if (!result.isEmpty()) {
-                new WebserviceResponseServerHandler(context).parseResult(result);
-                Intent intent = new Intent(context, PatientList.class);
-                context.startActivity(intent);
-                progressDialog.dismiss();
-            } else {
-                FancyToast.makeText(context, "Error while activating, Check your internet connection", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
-                progressDialog.dismiss();
+            @Override
+            public void onFailure(@NonNull Call<Data2> call, @NonNull Throwable t) {
+                t.printStackTrace();
+                FancyToast.makeText(context, "No internet connection ", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                mPb.hide();
             }
-        }
+
+        });
 
     }
 
+
+    private void update(String dateNextRefill,
+                        Long id) {
+        ProgressDialog progressdialog = new ProgressDialog(context);
+        progressdialog.setMessage("Uploading data please wait...");
+        progressdialog.setCancelable(false);
+        progressdialog.setIndeterminate(false);
+        progressdialog.setMax(100);
+        progressdialog.show();
+        ClientAPI clientAPI = APIService.createService(ClientAPI.class);
+        Call<Void> objectCall = clientAPI.update(dateNextRefill, id);
+        objectCall.enqueue(new Callback<Void>() {
+            @SuppressLint("SimpleDateFormat")
+            @Override
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+                if (response.isSuccessful()) {
+                    FancyToast.makeText(context, "Sync was successful", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                    progressdialog.dismiss();
+                } else {
+                    FancyToast.makeText(context, "Contact System administrator ", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                    progressdialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                t.printStackTrace();
+                FancyToast.makeText(context, "No Internet Connection", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                progressdialog.dismiss();
+            }
+        });
+    }
+
+    private void synchronizeARV() {
+        mPb = new ProgressDialog(context);
+        mPb.setProgress(0);
+        mPb.setMessage("Uploading data please wait...");
+        mPb.setCancelable(false);
+        mPb.setIndeterminate(false);
+        mPb.setProgress(0);
+        mPb.setMax(100);
+        mPb.show();
+        ClientAPI clientAPI = APIService.createService(ClientAPI.class);
+        Call<Response> objectCall = clientAPI.syncARVRefill(DDDDb.getInstance(context).arvRefillRepository().findAll());
+        objectCall.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(@NonNull Call<Response> call, @NonNull retrofit2.Response<Response> response) {
+                if (response.isSuccessful()) {
+//                    FancyToast.makeText(context, "Sync was successful", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                    mPb.dismiss();
+                } else {
+                    mPb.dismiss();
+                    FancyToast.makeText(context, "Syn was not successful to Server ", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Response> call, @NonNull Throwable t) {
+                t.printStackTrace();
+                FancyToast.makeText(context, "No internet connection ", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                mPb.dismiss();
+            }
+
+        });
+
+    }
 
     private boolean validateInput(String pin) {
         if (pin.isEmpty()) {

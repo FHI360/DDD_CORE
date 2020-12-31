@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -17,13 +15,11 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
-import org.fhi360.ddd.R;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 
 import org.fhi360.ddd.Db.DDDDb;
 import org.fhi360.ddd.domain.Appointment;
-import org.fhi360.ddd.domain.Encounter;
 import org.fhi360.ddd.domain.Patient;
 import org.fhi360.ddd.util.DateUtil;
 import org.fhi360.ddd.util.EditTextDatePicker;
@@ -39,7 +35,7 @@ import static org.fhi360.ddd.util.Constants.PREFERENCES_ENCOUNTER;
 
 public class ClientTrackingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private int id;
-    private int patientId;
+    private Long patientId;
     private Date dateLastVisit;
     private Date dateNextVisit;
     private Date dateTracked;
@@ -190,7 +186,7 @@ public class ClientTrackingActivity extends AppCompatActivity implements Adapter
         patient = new Gson().fromJson(json, Patient.class);
 
       //  facilityId = patient.getFacilityId();
-        patientId = patient.getPatientId();
+        patientId = patient.getId();
         if (patientId == 0L) {
             patientId = patient.getId();
         }

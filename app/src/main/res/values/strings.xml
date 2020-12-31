@@ -36,7 +36,7 @@
     </string-array>
     <string name="str_tv_title">AChartEngine Graph in a custom layout</string>
     <string-array name="spinner_discontinue">
-        <item> </item>
+        <item></item>
         <item>Becomes pregnant</item>
         <item>Unable to pay service charge</item>
         <item>Develops comorbidity</item>
@@ -46,13 +46,13 @@
     </string-array>
 
     <string-array name="gender">
-        <item></item>
+        <item>Select</item>
         <item>Male</item>
         <item>Female</item>
     </string-array>
 
     <string-array name="clinical_stage">
-        <item></item>
+        <item>Select</item>
         <item>Stage I</item>
         <item>Stage II</item>
         <item>Stage III</item>
@@ -72,6 +72,12 @@
         <item>Targeted</item>
     </string-array>
 
+    <string-array name="facilityName">
+        <item></item>
+
+    </string-array>
+
+
     <string name="prompt_email">Username</string>
     <string name="username_portugues">nome do usuário</string>
     <string name="password_portugues">senha</string>
@@ -88,7 +94,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email completions." </string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
 
     <string name="forgot_password">Forgot Password?</string>
     <string name="logo">Logo</string>
@@ -105,8 +111,8 @@
     <string name="basic_unit">Basic Unit</string>
     <string name="save">Save</string>
     <string name="basic_unit1">Basic Unit?</string>
-    <string name="register_as_facility">\n \n  \n \nRegister \n  as Facility</string>
-    <string name="register_as_a_ddd_outlet">\n \n  \n \n Register \n  as  outlet</string>
+    <string name="register_as_facility">\n \n \n \nRegister \n as Facility</string>
+    <string name="register_as_a_ddd_outlet">\n \n \n \n Register \n as outlet</string>
     <string name="art_care">ART Care</string>
     <string name="did_you_miss_any_dose_of_your_medication">Did you miss any dose of your medication</string>
     <string name="enter_reaction">Enter reaction</string>
@@ -125,7 +131,6 @@
     <string name="arv_refill">ARV Refill</string>
     <string name="discontinuing_ddd_service">Discontinuing DDD Service</string>
     <string name="refill_history">Refill History</string>
-    <string name="client_profile">Client Profile</string>
     <string name="address">Address</string>
     <string name="phone">Phone</string>
     <string name="gender">Gender</string>
@@ -145,14 +150,16 @@
     <string name="signup_login_hint">Already have an account? Sign In</string>
     <string name="login_signup_hint">Don\'t have an account? Sign Up</string>
     <string name="user_login">User Login</string>
-    <string name="register_as_either_a_facility_n_or_as_a_ddd_outlet">Register as either a facility \n \u0020 \u0020 \u0020 or as a DDD outlet</string>
+    <string name="register_as_either_a_facility_n_or_as_a_ddd_outlet">Register as either a facility \n \u0020 \u0020
+        \u0020 or as a DDD outlet
+    </string>
     <string name="next">Next</string>
     <string name="welcome_n_to_n_ddd">Welcome\nto\nDDD</string>
     <string name="create_facility_account">Create Facility Account</string>
     <string name="facility_name">Facility Name</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="phone_number">Phone Number</string>
-    <string name="create_ddd_outlet_account">Create Outlet Account</string>
+    <string name="create_ddd_outlet_account">Reset Outlet Password</string>
 
     <string name="title_1">First Visit</string>
     <string name="title_2">Re Visit</string>
@@ -174,7 +181,8 @@
 
 
     <string name="title1_1">Register DDD Outlet</string>
-    <string name="title1_2">Inventory</string>
+    <string name="title1_2">Client Registration</string>
+    <string name="title1_3">Inventory</string>
     <string name="title1_4">Report</string>
     <string name="title1_5">Synchronize</string>
 
@@ -186,13 +194,28 @@
     <string name="drug_issues">Drug Dispense</string>
     <string name="text_drug_setup">Drugs to be stocked</string>
     <string name="text_drug_assigned">Drugs dispensations to the outlets</string>
-    <string name="discontinue_service">Discontinue Service</string>
-    <string name="appointments">Appointments</string>
 
+    <string name="title1_134">Registration of Client and Assigning to DDD Outlets.</string>
 
     <string name="drug_recieved">Drug Received</string>
     <string name="drug_requestion">Drug Request</string>
-    <string name="drug_recieved_desc">Display how drugs is been dispense to patient </string>
+    <string name="drug_recieved_desc">Display how drugs is been dispense to patient</string>
     <string name="drug_request_desc">Requisition drugs from the facility</string>
     <string name="send_reminder">Send Reminder</string>
+    <string name="check_assigned_clients">Assigned</string>
+    <string name="first_visit">First Visit</string>
+    <string name="user_navigation">User Navigation</string>
+    <string name="discontinue_service">Discontinue Service</string>
+    <string name="appointments">Appointments</string>
+    <string name="client_profile">Client Profile</string>
+    <string name="drug_refill">Drug Refill</string>
+    <string name="search_patient">Search patient</string>
+    <string name="search_here">search here</string>
+    <string name="clickmore">Click More</string>
+
+    <string name="pick_up_history">Patients History</string>
+    <string name="patient_history_desc">This shows the history of an individual patient</string>
+    <string name="_dispense_register">ARV Dispensing registration</string>
+    <string name="_dispense_register_desc">This is the daily ARV dispensing record</string>
+    <string name="invent_rio_relat_rio">Inventory Report</string>
 </resources>

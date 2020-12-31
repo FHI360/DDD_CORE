@@ -1,4 +1,5 @@
 package org.fhi360.ddd;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,10 +17,14 @@ import com.google.gson.Gson;
 import org.fhi360.ddd.R;
 import org.fhi360.ddd.Db.DDDDb;
 import org.fhi360.ddd.adapter.DefaulterListAdapter;
+import org.fhi360.ddd.domain.ARV;
 import org.fhi360.ddd.domain.Patient;
+
 import java.util.List;
+
 import static org.fhi360.ddd.util.Constants.PREFERENCES_ENCOUNTER;
-public class DefaulterListFragment  extends AppCompatActivity {
+
+public class DefaulterListFragment extends AppCompatActivity {
     private Cursor cursor;
     private SQLiteDatabase db;
     private DefaulterListAdapter adapter;
@@ -29,21 +34,24 @@ public class DefaulterListFragment  extends AppCompatActivity {
     private int patientId;
     private int facilityId;
     private SharedPreferences preferences;
-    public DefaulterListFragment() {}
+
+    public DefaulterListFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_defaulter_list);
 
-        defaulterListView =  findViewById(R.id.defaulterlistView);
-        patients = DDDDb.getInstance(this).patientRepository().getDefaulters();
+        defaulterListView = findViewById(R.id.defaulterlistView);
+        patients = DDDDb.getInstance(this).patientRepository().getDefaulter();
         adapter = new DefaulterListAdapter((Activity) context, patients);
         defaulterListView.setAdapter(adapter);
         defaulterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                savePreferences(patients.get(position));
+                Patient patient = DDDDb.getInstance(getApplicationContext()).patientRepository().findByPatient(patients.get(position).getId());
+                savePreferences(patient);
                 Intent intent = new Intent(context, ClientTrackingActivity.class);
                 startActivity(intent);
             }
@@ -51,22 +59,22 @@ public class DefaulterListFragment  extends AppCompatActivity {
 
     }
 
-    //This method is called by the onTextChanged method of the TextWatcher in MainActivity
-    public void refreshListView(CharSequence s) {
-        if (!s.toString().equals("")) {
-           // long today = System.currentTimeMillis();
-            long period = 28 * 24 * 60 * 60 * 1000;
-            patients = DDDDb.getInstance(this).patientRepository().getDefaulters(Long.toString(period),s.toString());
-        }
-        else {
-            patients = DDDDb.getInstance(this).patientRepository().getDefaulters();
-        }
-        adapter = new DefaulterListAdapter(this, patients);
-        defaulterListView.setAdapter(adapter);
-    }
+//    //This method is called by the onTextChanged method of the TextWatcher in MainActivity
+//    public void refreshListView(CharSequence s) {
+//        if (!s.toString().equals("")) {
+//           // long today = System.currentTimeMillis();
+//            long period = 28 * 24 * 60 * 60 * 1000;
+//            patients = DDDDb.getInstance(this).patientRepository().getDefaulters(Long.toString(period),s.toString());
+//        }
+//        else {
+//            patients = DDDDb.getInstance(this).patientRepository().getDefaulters();
+//        }
+//        adapter = new DefaulterListAdapter(this, patients);
+//        defaulterListView.setAdapter(adapter);
+//    }
 
     private void savePreferences(Patient patient) {
-        preferences =  this.getSharedPreferences(PREFERENCES_ENCOUNTER, 0);
+        preferences = this.getSharedPreferences(PREFERENCES_ENCOUNTER, 0);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("patient", new Gson().toJson(patient));
         editor.putBoolean("edit_mode", false);

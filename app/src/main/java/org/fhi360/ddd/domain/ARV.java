@@ -1,11 +1,12 @@
 package org.fhi360.ddd.domain;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import androidx.room.PrimaryKey;;
+import java.util.Date;
 
-import com.google.gson.internal.$Gson$Types;
-
+import kotlin.jvm.Transient;
 import lombok.Data;
 
 @Data
@@ -13,9 +14,11 @@ import lombok.Data;
 public class ARV {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    private int id;
+    private Long id;
     @ColumnInfo(name = "patient_id")
-    private int patientId;
+    private Patient patient;
+    @ColumnInfo(name = "facility_id")
+    private Long facilityId;
     @ColumnInfo(name = "date_visit")
     private String dateVisit;
     @ColumnInfo(name = "date_next_refill")
@@ -51,7 +54,7 @@ public class ARV {
     @ColumnInfo(name = "eligible_ipt")
     private String eligibleIpt;
     @ColumnInfo(name = "regimen1")
-    private String regimen1;
+    private Long regimen1;
     @ColumnInfo(name = "duration1")
     private int duration1;
     @ColumnInfo(name = "prescribed1")
@@ -59,7 +62,7 @@ public class ARV {
     @ColumnInfo(name = "dispensed1")
     private String dispensed1;
     @ColumnInfo(name = "regimen2")
-    private String regimen2;
+    private Long regimen2;
     @ColumnInfo(name = "duration2")
     private int duration2;
     @ColumnInfo(name = "prescribed2")
@@ -67,7 +70,7 @@ public class ARV {
     @ColumnInfo(name = "dispensed2")
     private String dispensed2;
     @ColumnInfo(name = "regimen3")
-    private String regimen3;
+    private Long regimen3;
     @ColumnInfo(name = "duration3")
     private int duration3;
     @ColumnInfo(name = "prescribed3")
@@ -94,4 +97,11 @@ public class ARV {
     private String missedRefill;
     @ColumnInfo(name = "how_many_refill_missed")
     private String howMany;
+    @ColumnInfo(name = "uuid")
+    private String uuid;
+    private String temperature;
+    private String dateDiscontinued;
+    private String reasonDiscontinued;
+    private int discontinued;
+
 }

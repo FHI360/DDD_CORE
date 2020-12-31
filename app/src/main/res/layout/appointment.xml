@@ -10,7 +10,7 @@
     app:layout_constraintTop_toTopOf="parent">
 
     <LinearLayout
-        android:layout_width="290dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="40dp"
@@ -39,8 +39,8 @@
 
             <TextView
                 android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:text="Idris Oyibbo Igagwu"
@@ -134,8 +134,10 @@
             android:id="@+id/sendReminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|start"
+            android:layout_gravity="start"
             android:background="@drawable/background_button_accent"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/send_reminder"
             android:textColor="@color/white" />
 

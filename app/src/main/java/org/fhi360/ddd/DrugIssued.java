@@ -20,13 +20,13 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.ColumnInfo;
 
 import com.google.gson.Gson;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.fhi360.ddd.Db.DDDDb;
-import org.fhi360.ddd.domain.Account;
+import org.fhi360.ddd.R;
+import org.fhi360.ddd.domain.Pharmacy;
 import org.fhi360.ddd.domain.Drug;
 import org.fhi360.ddd.domain.IssuedDrug;
 
@@ -41,7 +41,7 @@ import static org.fhi360.ddd.util.Constants.PREFERENCES_ENCOUNTER;
 
 public class DrugIssued extends AppCompatActivity {
     private TextView noOfPatient;
-    private Account account;
+    private Pharmacy account;
     private View view1, view2, view3, view4, view5, view6;
     private LinearLayout layout1, layout2, layout3, layout4, layout5, layout6;
     private EditText quantity, name, basicUnit, batchNumber, expireDate;
@@ -60,7 +60,7 @@ public class DrugIssued extends AppCompatActivity {
         restorePreferences();
         if (savedInstanceState != null) {
             String json = savedInstanceState.getString("account");
-            account = new Gson().fromJson(json, Account.class);
+            account = new Gson().fromJson(json, Pharmacy.class);
         }
         noOfPatient = findViewById(R.id.noOfPatient);
         name = findViewById(R.id.name);
@@ -93,7 +93,7 @@ public class DrugIssued extends AppCompatActivity {
 //        layout4.setVisibility(View.INVISIBLE);
 //        layout5.setVisibility(View.INVISIBLE);
 
-        name.setText(account.getPharmacy());
+        name.setText(account.getName());
         final ArrayList drugId = new ArrayList();
         ArrayList drugNames = new ArrayList();
         List<Drug> drugs = DDDDb.getInstance(this).drugRepository().findByAll();
@@ -103,7 +103,7 @@ public class DrugIssued extends AppCompatActivity {
 
         }
 
-        int count = DDDDb.getInstance(this).patientRepository().count(account.getPinCode());
+        int count =DDDDb.getInstance(this).patientRepository().count(account.getId());
         noOfPatient.setText("Number of patient " + count);
         final ArrayAdapter drug = new ArrayAdapter<>(DrugIssued.this,
                 R.layout.support_simple_spinner_dropdown_item, drugNames);
@@ -166,17 +166,18 @@ public class DrugIssued extends AppCompatActivity {
                 String basicUnit1 = basicUnit.getText().toString();
                 String expireDate1 = expireDate.getText().toString();
                 String batchNumber1 = batchNumber.getText().toString();
-                String id = drugName.getSelectedItem().toString();
+                HashMap<String, String> regId = getId();
+                String id = regId.get("id");
                 String quantity1 = quantity.getText().toString();
                 if (validateInput(basicUnit1, expireDate1, batchNumber1, quantity1)) {
                     IssuedDrug issuedDrug = new IssuedDrug();
                     issuedDrug.setBatchNumber(batchNumber1);
-                    issuedDrug.setDrugId(id);
-                    issuedDrug.setPinCode(account.getPinCode());
+                    issuedDrug.setRegimenId(Long.valueOf(id));
+                    issuedDrug.setPinCode(account.getPin());
                     issuedDrug.setExpireDate(expireDate1);
-                    issuedDrug.setQuantity(quantity1);
+                    issuedDrug.setQuantity(Double.parseDouble(quantity1));
                     DDDDb.getInstance(getApplicationContext()).drugIssuedRepository().save(issuedDrug);
-                    FancyToast.makeText(getApplicationContext(), "Drug issued successfully", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                    FancyToast.makeText(getApplicationContext(), "Saved successfully", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
 
                 }
             }
@@ -186,7 +187,7 @@ public class DrugIssued extends AppCompatActivity {
 
     private void restorePreferences() {
         String json = preferences.getString("account", "");
-        account = new Gson().fromJson(json, Account.class);
+        account = new Gson().fromJson(json, Pharmacy.class);
     }
 
     public void savePin(String drugid) {
@@ -213,20 +214,20 @@ public class DrugIssued extends AppCompatActivity {
 
     private boolean validateInput(String basicUnit1, String expired1, String batchNumber1, String qty) {
         if (basicUnit1.isEmpty()) {
-            basicUnit.setError("basic unit can not be empty");
+            basicUnit.setError("basic unit can't be empty");
             return false;
 
 
         } else if (expired1.isEmpty()) {
-            expireDate.setError("Expire date can not be empty");
+            expireDate.setError("expire date can't be empty");
             return false;
 
         } else if (batchNumber1.isEmpty()) {
-            batchNumber.setError("Batch Number can not be empty");
+            batchNumber.setError("batch number can't be empty");
             return false;
 
         } else if (qty.isEmpty()) {
-            quantity.setError("Quantity can not be empty");
+            quantity.setError("quantity can't be empty");
             return false;
 
         }

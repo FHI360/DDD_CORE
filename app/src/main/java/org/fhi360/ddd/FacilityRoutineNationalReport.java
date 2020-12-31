@@ -57,7 +57,7 @@ public class FacilityRoutineNationalReport extends AppCompatActivity implements 
         mViewPager = findViewById(R.id.viewPager);
         imageView = findViewById(R.id.imageView);
 
-        SpringDotsIndicator springDotsIndicator = (SpringDotsIndicator) findViewById(R.id.spring_dots_indicator);
+        //SpringDotsIndicator springDotsIndicator = (SpringDotsIndicator) findViewById(R.id.spring_dots_indicator);
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +80,7 @@ public class FacilityRoutineNationalReport extends AppCompatActivity implements 
         mFragmentCardShadowTransformer = new ShadowTransformer(mViewPager, mFragmentCardAdapter);
 
         mViewPager.setAdapter(mCardAdapter);
-        springDotsIndicator.setViewPager(mViewPager);
+      //  springDotsIndicator.setViewPager(mViewPager);
         mViewPager.setPageTransformer(false, mCardShadowTransformer);
         mViewPager.setOffscreenPageLimit(3);
 

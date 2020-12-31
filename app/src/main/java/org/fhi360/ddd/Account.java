@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import org.fhi360.ddd.R;
 
 public class Account extends AppCompatActivity {
@@ -18,7 +19,7 @@ public class Account extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account);
         registerFacility = findViewById(R.id.registerOutlet);
-        registerOutlet = findViewById(R.id.registerOutlet1);
+    registerOutlet = findViewById(R.id.registerOutlet1);
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override

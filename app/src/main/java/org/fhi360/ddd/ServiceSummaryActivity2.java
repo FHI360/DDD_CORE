@@ -163,7 +163,7 @@ public class ServiceSummaryActivity2 extends AppCompatActivity {
             @SuppressLint("SimpleDateFormat")
             Date dob = new SimpleDateFormat("dd-MM-yyyy").parse(patient.getDateBirth());
             Date ref = DateUtil.getLastDateOfMonth(year, month);
-            int age = DateUtil.getAge(dob, ref);
+            int age = DateUtil.getAge(String.valueOf(dob));
             //System.out.println("AGE IS " + age1);
             if (gender.equalsIgnoreCase("Male")) {
                 if (age < 15) {

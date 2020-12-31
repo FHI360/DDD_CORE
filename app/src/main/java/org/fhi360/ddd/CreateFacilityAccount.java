@@ -14,7 +14,9 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.lamudi.phonefield.PhoneEditText;
+
 import org.fhi360.ddd.R;
+
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.fhi360.ddd.Db.DDDDb;
@@ -26,7 +28,8 @@ import java.util.Objects;
 public class CreateFacilityAccount extends AppCompatActivity {
 
     private Button button;
-    private EditText username, password, name, district, province, contactDetail;
+    private EditText username, password;
+    //district, province, contactDetail;
     private Spinner role;
     private EditText phone;
 
@@ -37,11 +40,7 @@ public class CreateFacilityAccount extends AppCompatActivity {
         button = findViewById(R.id.register);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
-        name = findViewById(R.id.name);
-        phone = findViewById(R.id.phone);
-        district = findViewById(R.id.district);
-        province = findViewById(R.id.province);
-        contactDetail = findViewById(R.id.contactDetail);
+        phone = findViewById(R.id.phoneNumber);
         phone.setHint(R.string.phone_hint);
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -57,14 +56,9 @@ public class CreateFacilityAccount extends AppCompatActivity {
             public void onClick(View v) {
                 String username1 = username.getText().toString();
                 String password1 = password.getText().toString();
-                String name1 = name.getText().toString();
                 //String role;
                 String phone1 = phone.getText().toString();
-                String district1 = district.getText().toString();
-                String province1 = province.getText().toString();
-                String contactDetail1 = contactDetail.getText().toString();
-
-                if (validateInput(username1, password1, phone1, district1, province1, contactDetail1)) {
+                if (validateInput(username1, password1, phone1)) {
                     User user = DDDDb.getInstance(CreateFacilityAccount.this).userRepository().findByUsernameAndPassword(username1, password1);
                     if (user != null) {
                         FancyToast.makeText(getApplicationContext(), "User with these credentials already registered", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
@@ -72,16 +66,16 @@ public class CreateFacilityAccount extends AppCompatActivity {
                         User user1 = new User();
                         user1.setPassword(password1);
                         user1.setUsername(username1);
-                        user1.setName(name1);
-                        user1.setRole("Facility");
+                        // user1.setName(name1);
+                        user1.setRole("admin");
                         user1.setPhone(phone1);
-                        user1.setDistrict(district1);
-                        user1.setProvince(province1);
-                        user1.setContactDetail(contactDetail1);
+//                        user1.setDistrict(district1);
+//                        user1.setProvince(province1);
+//                        user1.setContactDetail(contactDetail1);
                         user1.setDate(new Date());
-                        save(name1);
+                        // save(name1);
                         DDDDb.getInstance(CreateFacilityAccount.this).userRepository().save(user1);
-                        Intent intent = new Intent(CreateFacilityAccount.this, FacilityWelcome.class);
+                        Intent intent = new Intent(CreateFacilityAccount.this, FacilityActivation.class);
                         startActivity(intent);
                     }
                 }
@@ -90,7 +84,7 @@ public class CreateFacilityAccount extends AppCompatActivity {
 
     }
 
-    private boolean validateInput(String username1, String password1, String phone1, String district1, String province1, String contactDetail1) {
+    private boolean validateInput(String username1, String password1, String phone1) {
         if (username1.isEmpty()) {
             username.setError("username can not be empty");
             return false;
@@ -101,16 +95,17 @@ public class CreateFacilityAccount extends AppCompatActivity {
         } else if (phone1.isEmpty()) {
             phone.setError("Phone can not be empty");
             return false;
-        } else if (district1.isEmpty()) {
-            district.setError("District can not be empty");
-            return false;
-        } else if (province1.isEmpty()) {
-            province.setError("Province can not be empty");
-            return false;
-        } else if (contactDetail1.isEmpty()) {
-            contactDetail.setError("Contact can not be empty");
-            return false;
         }
+//        } else if (district1.isEmpty()) {
+//            district.setError("District can not be empty");
+//            return false;
+//        } else if (province1.isEmpty()) {
+//            province.setError("Province can not be empty");
+//            return false;
+//        } else if (contactDetail1.isEmpty()) {
+//            contactDetail.setError("Contact can not be empty");
+//            return false;
+//        }
         return true;
 
 

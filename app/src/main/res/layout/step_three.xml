@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="@color/bgcolor"
+
         app:cardCornerRadius="5dp"
         app:cardElevation="5dp">
 
@@ -32,102 +32,102 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="TB Screening"
-                android:textColor="#fff"
+                android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textView3"
-                style="@style/TextViewLarge"
-                android:layout_below="@+id/ipt"
-                android:layout_margin="10dp"
-                android:text="Are you currently on TB treatment?"
-                android:textColor="@color/white" />
+<!--            <TextView-->
+<!--                android:id="@+id/textView3"-->
+<!--                style="@style/TextViewLarge"-->
+<!--                android:layout_below="@+id/ipt"-->
+<!--                android:layout_margin="10dp"-->
+<!--                android:text="Are you currently on TB treatment?"-->
+<!--                android:textColor="@color/white" />-->
 
-            <Spinner
-                android:id="@+id/tb_treatment"
-                style="@style/TextBox"
-                android:layout_below="@+id/textView3"
-                android:layout_margin="10dp"
-                android:entries="@array/spinner_yes_no"
-                android:textColorHint="#fff" />
+<!--            <Spinner-->
+<!--                android:id="@+id/tb_treatment"-->
+<!--                style="@style/TextBox"-->
+<!--                android:layout_below="@+id/textView3"-->
+<!--                android:layout_margin="10dp"-->
+<!--                android:entries="@array/spinner_yes_no"-->
+<!--                android:textColorHint="#fff" />-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
 
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@color/colorSolitude" />
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginBottom="8dp"-->
+<!--                android:background="@color/colorSolitude" />-->
 
-            <LinearLayout
-                android:id="@+id/tb_treatment_yes"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="30dp"
-                android:orientation="vertical">
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:paddingTop="2dp"
-                    android:textColorHint="#fff">
-
-                    <EditText
-                        android:id="@+id/date_started_tb_treatment"
-                        style="@style/TextBox"
-                        android:background="@android:color/transparent"
-                        android:focusable="false"
-                        android:hint="TB Treatment start date"
-                        android:textColor="@color/white" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@color/colorSolitude" />
+<!--            <LinearLayout-->
+<!--                android:id="@+id/tb_treatment_yes"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:orientation="vertical">-->
 
 
-            </LinearLayout>
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="10dp"-->
+<!--                    android:paddingTop="2dp"-->
+<!--                    android:textColorHint="#fff">-->
 
-            <LinearLayout
-                android:id="@+id/enterdrug"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="30dp"
-                android:orientation="vertical">
+<!--                    <EditText-->
+<!--                        android:id="@+id/date_started_tb_treatment"-->
+<!--                        style="@style/TextBox"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:focusable="false"-->
+<!--                        android:hint="TB Treatment start date"-->
+<!--                        android:textColor="@color/white" />-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--                <View-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="1dp"-->
+
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:layout_marginBottom="8dp"-->
+<!--                    android:background="@color/colorSolitude" />-->
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:paddingTop="2dp"
-                    android:textColorHint="#fff">
+<!--            </LinearLayout>-->
 
-                    <EditText
-                        android:id="@+id/enter_drug"
-                        style="@style/TextBox"
-                        android:background="@android:color/transparent"
-                        android:focusable="false"
-                        android:hint="Enter Drug"
-                        android:textColor="@color/white" />
-                </com.google.android.material.textfield.TextInputLayout>
+<!--            <LinearLayout-->
+<!--                android:id="@+id/enterdrug"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:orientation="vertical">-->
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
 
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@color/colorSolitude" />
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="10dp"-->
+<!--                    android:paddingTop="2dp"-->
+<!--                    android:textColorHint="#fff">-->
 
-            </LinearLayout>
+<!--                    <EditText-->
+<!--                        android:id="@+id/enter_drug"-->
+<!--                        style="@style/TextBox"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:focusable="false"-->
+<!--                        android:hint="Enter Drug"-->
+<!--                        android:textColor="@color/white" />-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--                <View-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="1dp"-->
+
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:layout_marginBottom="8dp"-->
+<!--                    android:background="@color/colorSolitude" />-->
+
+<!--            </LinearLayout>-->
 
             <LinearLayout
                 android:id="@+id/tb_treatment_no"
@@ -142,7 +142,7 @@
                     style="@style/TextViewLarge"
                     android:layout_margin="10dp"
                     android:text="Have you been coughing for 2 weeks or more?"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
 
                 <Spinner
                     android:id="@+id/have_you_been_coughing"
@@ -158,14 +158,14 @@
 
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@color/colorSolitude" />
+                    android:background="@color/black" />
 
                 <TextView
                     android:id="@+id/textView6"
                     style="@style/TextViewLarge"
                     android:layout_margin="10dp"
                     android:text="Do you have fever for 2 weeks or more?"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
 
                 <Spinner
                     android:id="@+id/do_you_have_fever"
@@ -180,14 +180,14 @@
 
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@color/colorSolitude" />
+                    android:background="@color/black" />
 
                 <TextView
                     android:id="@+id/textView7"
                     style="@style/TextViewLarge"
                     android:layout_margin="10dp"
                     android:text="Are you losing weight?"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
 
                 <Spinner
                     android:id="@+id/are_you_losing_weight"
@@ -203,14 +203,14 @@
 
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@color/colorSolitude" />
+                    android:background="@color/black" />
 
                 <TextView
                     android:id="@+id/textView8"
                     style="@style/TextViewLarge"
                     android:layout_margin="10dp"
                     android:text="Are you having night sweats?"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
 
                 <Spinner
                     android:id="@+id/are_you_having_sweet"
@@ -224,7 +224,7 @@
                     style="@style/TextViewLarge"
                     android:layout_margin="10dp"
                     android:text="Do you have any swellings in the neck or ampit?"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
 
                 <Spinner
                     android:id="@+id/do_you_have_swelling_neck"
@@ -239,7 +239,7 @@
 
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@color/colorSolitude" />
+                    android:background="@color/black" />
 
             </LinearLayout>
 
@@ -256,7 +256,7 @@
                     style="@style/TextViewLarge"
                     android:layout_margin="10dp"
                     android:text="Refered client for TB diagnosis:"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
 
                 <Spinner
                     android:id="@+id/tb_referred"
@@ -270,7 +270,7 @@
 
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@color/colorSolitude" />
+                    android:background="@color/black" />
 
             </LinearLayout>
 
@@ -287,7 +287,7 @@
                     style="@style/TextViewLarge"
                     android:layout_margin="10dp"
                     android:text="Eligible for IPT:"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
 
                 <Spinner
                     android:id="@+id/eligible_ipt"
@@ -303,7 +303,7 @@
 
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@color/colorSolitude" />
+                    android:background="@color/black" />
 
             </LinearLayout>
 

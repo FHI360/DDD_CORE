@@ -12,18 +12,12 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
-
-import org.fhi360.ddd.R;
-
 import com.shashank.sony.fancytoastlib.FancyToast;
-
 import org.fhi360.ddd.Db.DDDDb;
 import org.fhi360.ddd.util.CSVWriter;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
@@ -38,16 +32,17 @@ public class DataExport extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_export);
+      setContentView(R.layout.activity_export);
         final Button export = findViewById(R.id.export);
         verifyStoragePermissions(this);
         export.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 export();
             }
         });
-
+//157359
     }
 
     public void export() {

@@ -1,5 +1,5 @@
-package org.fhi360.ddd;
 
+package org.fhi360.ddd;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,8 +20,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator;
 
+import org.fhi360.ddd.R;
 import org.fhi360.ddd.adapter.CardFragmentPagerAdapter;
-import org.fhi360.ddd.adapter.CardPagerAdapterOutletReport;
 import org.fhi360.ddd.adapter.SetupAdapter;
 import org.fhi360.ddd.domain.CardItem;
 
@@ -68,7 +68,7 @@ public class InventorySetup extends AppCompatActivity implements View.OnClickLis
         });
 
         names = findViewById(R.id.names);
-        names.setText("Drug Inventory");
+        names.setText("Inventory Management");
         mCardAdapter = new SetupAdapter();
         mCardAdapter.addCardItem(this, new CardItem(R.string.drug_setup, R.string.text_drug_setup));
         mCardAdapter.addCardItem(this, new CardItem(R.string.drug_issues, R.string.text_drug_assigned));
@@ -119,3 +119,4 @@ public class InventorySetup extends AppCompatActivity implements View.OnClickLis
     }
 
 }
+

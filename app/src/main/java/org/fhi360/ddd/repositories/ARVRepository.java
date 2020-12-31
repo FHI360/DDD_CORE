@@ -21,4 +21,21 @@ public interface ARVRepository {
     @Query("SELECT * from ARV")
     List<ARV> findAll();
 
+    @Query("SELECT * from ARV where patient_id =:patientId")
+    ARV findByPatientId1(Long patientId);
+
+
+    @Query("SELECT count(*) FROM arv where patient_id = :patient_id and regimen1 !=null")
+    int count(Long patient_id);
+
+    @Query("SELECT  *  FROM arv WHERE CURRENT_TIME > date_next_refill ORDER BY id ASC")
+    List<ARV> getDefaulter();
+
+
+    @Query("SELECT * from ARV")
+     List<ARV> findAll1();
+
+
+
+
 }

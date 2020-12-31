@@ -19,7 +19,7 @@ public class Appointment {
     @ColumnInfo(name = "facility_id")
     private int facilityId;
     @ColumnInfo(name = "patient_id")
-    private int patientId;
+    private Long patientId;
     @ColumnInfo(name = "date_tracked")
     private Date dateTracked;
     @ColumnInfo(name = "type_tracking")

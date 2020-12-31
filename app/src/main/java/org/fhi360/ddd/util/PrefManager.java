@@ -20,6 +20,20 @@ public class PrefManager {
         return user;
     }
 
+    public HashMap<String, String> getFacId() {
+        HashMap<String, String> user = new HashMap<>();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("facIdDb", Context.MODE_PRIVATE);
+        user.put("facId", sharedPreferences.getString("facId", null));
+        return user;
+    }
+    @SuppressLint("ApplySharedPref")
+    public void saveFacId(Long id) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("facIdDb", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("facId", String.valueOf(id));
+        editor.commit();
+    }
+
     @SuppressLint("ApplySharedPref")
     public void saveIpAddress(String ipAddress) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("ipAddressDb", Context.MODE_PRIVATE);

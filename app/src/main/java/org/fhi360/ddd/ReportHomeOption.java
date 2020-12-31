@@ -1,4 +1,5 @@
 package org.fhi360.ddd;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
@@ -9,10 +10,12 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Objects;
 
 public class ReportHomeOption extends AppCompatActivity {
@@ -24,6 +27,7 @@ public class ReportHomeOption extends AppCompatActivity {
     private View overlay;
     private boolean menuOpen = false;
     private TextView next;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,7 @@ public class ReportHomeOption extends AppCompatActivity {
         menu6 = findViewById(R.id.menu6);
         overlay = findViewById(R.id.overlay);
         ImageView back = findViewById(R.id.back);
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,22 +60,56 @@ public class ReportHomeOption extends AppCompatActivity {
                 }
             }
         });
+        ImageButton dasboard = findViewById(R.id.dashboard);
+        //
+        ImageButton rountineNational = findViewById(R.id.rountineNational);
+        //
+        ImageButton listClient = findViewById(R.id.listClient);
+        ImageButton defualterList = findViewById(R.id.defualterList);
+       // ImageView imageViewInventory = findViewById(R.id.inventoryManagementReport);
+
+        dasboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), OutletDashboard.class);
+                view.getContext().startActivity(intent);
+            }
+        });
+
+        rountineNational.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), OutletRoutineNationalReport.class);
+                view.getContext().startActivity(intent);
+            }
+        });
+
+        listClient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), PatientList.class);
+                view.getContext().startActivity(intent);
+            }
+        });
+
+        defualterList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), DefaulterListActivity1.class);
+                view.getContext().startActivity(intent);
+            }
+        });
+
+//        imageViewInventory.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(ReportHomeOption.this, InventoryReport.class);
+//                startActivity(intent);
+//            }
+//        });
+
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.report) {
-//
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     public void revealMenu() {
         menuOpen = true;
@@ -135,28 +174,4 @@ public class ReportHomeOption extends AppCompatActivity {
         hideMenu();
     }
 
-    public void menuClick(View view) {
-        hideMenu();
-        if (view.getTag().equals("Dashboard")) {
-            Intent intent = new Intent(view.getContext(), OutletDashboard.class);
-            view.getContext().startActivity(intent);
-        }
-
-        if (view.getTag().equals("Routine/National")) {
-            Intent intent = new Intent(view.getContext(), OutletRoutineNationalReport.class);
-            view.getContext().startActivity(intent);
-        }
-
-        if (view.getTag().equals("List of clients for DDD")) {
-            Intent intent = new Intent(view.getContext(), PatientList.class);
-            view.getContext().startActivity(intent);
-        }
-
-        if (view.getTag().equals("Defaulters List")) {
-            Intent intent = new Intent(view.getContext(), DefaulterListActivity1.class);
-            view.getContext().startActivity(intent);
-        }
-
-
-    }
 }

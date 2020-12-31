@@ -19,4 +19,8 @@ public interface DrugIssuedRepository {
 
     @Query("SELECT * FROM issueddrug")
     List<IssuedDrug> findByAll();
+
+
+    @Query("SELECT * FROM issueddrug WHERE    drug_id=:drugId and pin_code=:pinCode")
+    IssuedDrug findByAllBYId(Long drugId, String pinCode);
 }

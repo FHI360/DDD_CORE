@@ -10,25 +10,18 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.gson.Gson;
 import org.fhi360.ddd.R;
 
 import org.fhi360.ddd.ListDDDProfileActivity;
-import org.fhi360.ddd.domain.Account;
-import org.fhi360.ddd.ClientProfileActivity;
-import org.fhi360.ddd.Db.DDDDb;
-import org.fhi360.ddd.domain.Facility;
-import org.fhi360.ddd.domain.Patient;
+import org.fhi360.ddd.domain.Pharmacy;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Random;
 
@@ -36,7 +29,7 @@ import static org.fhi360.ddd.util.Constants.PREFERENCES_ENCOUNTER;
 
 public class ListDDDClientAdapter extends RecyclerView.Adapter<ListDDDClientAdapter.ViewHolder> {
     //These variables will hold the data for the views
-    private List<Account> accountList;
+    private List<Pharmacy> accountList;
     private Context context;
 
 
@@ -51,7 +44,7 @@ public class ListDDDClientAdapter extends RecyclerView.Adapter<ListDDDClientAdap
     }
 
     //Pass data to the adapter in its constructor
-    public ListDDDClientAdapter(List<Account> accountList, Context context) {
+    public ListDDDClientAdapter(List<Pharmacy> accountList, Context context) {
         this.accountList = accountList;
         this.context = context;
 
@@ -73,7 +66,7 @@ public class ListDDDClientAdapter extends RecyclerView.Adapter<ListDDDClientAdap
     @Override
     public void onBindViewHolder(ListDDDClientAdapter.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         CardView cardView = holder.cardView;
-        String firstLettersurname = String.valueOf(accountList.get(position).getPharmacy().charAt(0));
+        String firstLettersurname = String.valueOf(accountList.get(position).getName().charAt(0));
         Random mRandom = new Random();
         TextView circleImages = cardView.findViewById(R.id.circleImage);
         int color = Color.argb(255, mRandom.nextInt(256), mRandom.nextInt(256), mRandom.nextInt(256));
@@ -83,10 +76,10 @@ public class ListDDDClientAdapter extends RecyclerView.Adapter<ListDDDClientAdap
         TextView profileView = cardView.findViewById(R.id.patient_profile);
 
 
-        String firstLettersOtherName = String.valueOf(accountList.get(position).getPharmacy().charAt(0));
+        String firstLettersOtherName = String.valueOf(accountList.get(position).getName().charAt(0));
 
 
-        String fullOtherName = firstLettersOtherName.toUpperCase() + accountList.get(position).getPharmacy().substring(1).toLowerCase();
+        String fullOtherName = firstLettersOtherName.toUpperCase() + accountList.get(position).getName().substring(1).toLowerCase();
 
         String clientName = "<font color='#000'>" + fullOtherName + "</font>";
         profileView.setText(Html.fromHtml(clientName), TextView.BufferType.SPANNABLE);
@@ -104,7 +97,7 @@ public class ListDDDClientAdapter extends RecyclerView.Adapter<ListDDDClientAdap
         });
     }
 
-    private void savePreferences(Account account) {
+    private void savePreferences(Pharmacy account) {
         SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_ENCOUNTER, 0);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("account", new Gson().toJson(account));

@@ -30,7 +30,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
@@ -65,46 +65,6 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    android:contentDescription="@string/prompt_email"
-                    android:src="@drawable/facilityoutleticon" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:hintEnabled="false">
-
-                    <EditText
-                        android:id="@+id/name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/facility_name"
-                        android:inputType="textPersonName"
-                        android:maxLines="1"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingTop="12dp"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:paddingBottom="12dp"
-                        android:singleLine="true"
-                        android:textColor="#eeeeee"
-                        android:textColorHint="#eeeeee"
-                        tools:ignore="Autofill" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -140,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:hint="@string/prompt_email"
-                        android:inputType="textPersonName"
+                        android:inputType="textVisiblePassword"
                         android:maxLines="1"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingTop="12dp"
@@ -190,11 +150,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
+                        android:inputType="textPassword"
                         android:hint="@string/password"
                         android:imeActionId="6"
                         android:imeActionLabel="@string/action_sign_in_short"
                         android:imeOptions="actionUnspecified"
-                        android:inputType="textPassword"
                         android:maxLines="1"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingTop="12dp"
@@ -245,8 +205,8 @@
                         android:hint="@string/confirm_password"
                         android:imeActionId="6"
                         android:imeActionLabel="@string/action_sign_in_short"
-                        android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
+                        android:imeOptions="actionUnspecified"
                         android:maxLines="1"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingTop="12dp"
@@ -281,161 +241,161 @@
                     app:ccp_defaultNameCode="IN" />
 
                 <EditText
-                    android:id="@+id/phone"
+                    android:id="@+id/phoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:enabled="true"
                     android:hint="@string/phone_number"
-                    android:textColor="@color/white"
                     android:inputType="phone"
+                    android:textColor="@color/white"
                     android:singleLine="true"
                     android:textColorHint="@color/white" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="48dp"
-                android:layout_marginLeft="48dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@color/colorSolitude" />
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginStart="48dp"-->
+<!--                android:layout_marginLeft="48dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginBottom="8dp"-->
+<!--                android:background="@color/colorSolitude" />-->
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal">-->
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    android:contentDescription="@string/prompt_email"
-                    android:src="@drawable/location" />
+<!--                <ImageView-->
+<!--                    android:layout_width="24dp"-->
+<!--                    android:layout_height="24dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginLeft="4dp"-->
+<!--                    android:layout_marginRight="4dp"-->
+<!--                    android:contentDescription="@string/prompt_email"-->
+<!--                    android:src="@drawable/location" />-->
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:hintEnabled="false">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:hintEnabled="false">-->
 
-                    <EditText
-                        android:id="@+id/district"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:hint="District"
-                        android:inputType="textPersonName"
-                        android:maxLines="1"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingTop="12dp"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:paddingBottom="12dp"
-                        android:singleLine="true"
-                        android:textColor="#eeeeee"
-                        android:textColorHint="#eeeeee"
-                        tools:ignore="Autofill" />
+<!--                    <EditText-->
+<!--                        android:id="@+id/district"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:hint="District"-->
+<!--                        android:inputType="textPersonName"-->
+<!--                        android:maxLines="1"-->
+<!--                        android:paddingLeft="@dimen/activity_horizontal_margin"-->
+<!--                        android:paddingTop="12dp"-->
+<!--                        android:paddingRight="@dimen/activity_horizontal_margin"-->
+<!--                        android:paddingBottom="12dp"-->
+<!--                        android:singleLine="true"-->
+<!--                        android:textColor="#eeeeee"-->
+<!--                        android:textColorHint="#eeeeee"-->
+<!--                        tools:ignore="Autofill" />-->
 
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+<!--            </LinearLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="48dp"
-                android:layout_marginLeft="48dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@color/colorSolitude" />
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginStart="48dp"-->
+<!--                android:layout_marginLeft="48dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginBottom="8dp"-->
+<!--                android:background="@color/colorSolitude" />-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal">-->
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    android:contentDescription="@string/prompt_email"
-                    android:src="@drawable/location" />
+<!--                <ImageView-->
+<!--                    android:layout_width="24dp"-->
+<!--                    android:layout_height="24dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginLeft="4dp"-->
+<!--                    android:layout_marginRight="4dp"-->
+<!--                    android:contentDescription="@string/prompt_email"-->
+<!--                    android:src="@drawable/location" />-->
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:hintEnabled="false">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:hintEnabled="false">-->
 
-                    <EditText
-                        android:id="@+id/province"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:hint="Province"
-                        android:inputType="textPersonName"
-                        android:maxLines="1"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingTop="12dp"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:paddingBottom="12dp"
-                        android:singleLine="true"
-                        android:textColor="#eeeeee"
-                        android:textColorHint="#eeeeee"
-                        tools:ignore="Autofill" />
+<!--                    <EditText-->
+<!--                        android:id="@+id/province"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:hint="Province"-->
+<!--                        android:inputType="textPersonName"-->
+<!--                        android:maxLines="1"-->
+<!--                        android:paddingLeft="@dimen/activity_horizontal_margin"-->
+<!--                        android:paddingTop="12dp"-->
+<!--                        android:paddingRight="@dimen/activity_horizontal_margin"-->
+<!--                        android:paddingBottom="12dp"-->
+<!--                        android:singleLine="true"-->
+<!--                        android:textColor="#eeeeee"-->
+<!--                        android:textColorHint="#eeeeee"-->
+<!--                        tools:ignore="Autofill" />-->
 
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+<!--            </LinearLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="48dp"
-                android:layout_marginLeft="48dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@color/colorSolitude" />
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginStart="48dp"-->
+<!--                android:layout_marginLeft="48dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginBottom="8dp"-->
+<!--                android:background="@color/colorSolitude" />-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal">-->
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    android:contentDescription="@string/prompt_email"
-                    android:src="@drawable/usericons" />
+<!--                <ImageView-->
+<!--                    android:layout_width="24dp"-->
+<!--                    android:layout_height="24dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginLeft="4dp"-->
+<!--                    android:layout_marginRight="4dp"-->
+<!--                    android:contentDescription="@string/prompt_email"-->
+<!--                    android:src="@drawable/usericons" />-->
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:hintEnabled="false">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:hintEnabled="false">-->
 
-                    <EditText
-                        android:id="@+id/contactDetail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:hint="Name of ART coordinator"
-                        android:inputType="textPersonName"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingTop="12dp"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:paddingBottom="12dp"
-                        android:singleLine="true"
-                        android:textColor="#eeeeee"
-                        android:textColorHint="#eeeeee"
-                        tools:ignore="Autofill" />
+<!--                    <EditText-->
+<!--                        android:id="@+id/contactDetail"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:hint="Name of ART coordinator"-->
+<!--                        android:inputType="textPersonName"-->
+<!--                        android:paddingLeft="@dimen/activity_horizontal_margin"-->
+<!--                        android:paddingTop="12dp"-->
+<!--                        android:paddingRight="@dimen/activity_horizontal_margin"-->
+<!--                        android:paddingBottom="12dp"-->
+<!--                        android:singleLine="true"-->
+<!--                        android:textColor="#eeeeee"-->
+<!--                        android:textColorHint="#eeeeee"-->
+<!--                        tools:ignore="Autofill" />-->
 
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+<!--            </LinearLayout>-->
 
             <View
                 android:layout_width="match_parent"

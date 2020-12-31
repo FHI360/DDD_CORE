@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,11 +49,18 @@ import com.mukesh.OtpView;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.fhi360.ddd.Db.DDDDb;
+import org.fhi360.ddd.domain.Facility;
 import org.fhi360.ddd.domain.Patient;
+import org.fhi360.ddd.domain.Regimen;
 import org.fhi360.ddd.domain.User;
+import org.fhi360.ddd.dto.Data;
+import org.fhi360.ddd.dto.PatientDto;
+import org.fhi360.ddd.dto.Response;
 import org.fhi360.ddd.util.CSVWriter;
 import org.fhi360.ddd.util.DateUtil;
 import org.fhi360.ddd.util.PrefManager;
+import org.fhi360.ddd.webservice.APIService;
+import org.fhi360.ddd.webservice.ClientAPI;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -66,25 +74,21 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.WeakHashMap;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.http.Path;
+
 import static org.fhi360.ddd.util.Constants.PREFERENCES_ENCOUNTER;
 
 public class ClientProfileActivity extends AppCompatActivity {
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-    static final int NUMBER_OF_PAGES = 2;
-    String serverUrl = null;
+
     private int[] layouts;
     private Context context;
     private Patient patient;
     private int id;
-    private int patientId;
-    private Date dateDiscontinued;
-    private String reasonDiscontinued;
+    private Long patientId;
+    private Spinner reasonDiscontinued;
     private Calendar myCalendar = Calendar.getInstance();
-
     private EditText dateDiscontinued1;
     private SharedPreferences preferences;
     private TextView textView;
@@ -97,7 +101,6 @@ public class ClientProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_profile);
-        serverUrl = getApplicationContext().getResources().getString(R.string.server_url);
         clientprofile = findViewById(R.id.clientprofile);
         avarter = findViewById(R.id.avarter);
         appointment = findViewById(R.id.appointment);
@@ -106,7 +109,6 @@ public class ClientProfileActivity extends AppCompatActivity {
         discontinueService = findViewById(R.id.discontinueService);
         refilHistory = findViewById(R.id.refilHistory);
         textView = findViewById(R.id.textView);
-        verifyStoragePermissions(this);
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +129,7 @@ public class ClientProfileActivity extends AppCompatActivity {
         String firstLettersOtherName = String.valueOf(patient.getOtherNames().charAt(0));
         String fullOtherName = firstLettersOtherName.toUpperCase() + patient.getOtherNames().substring(1).toLowerCase();
 
-        clientName = "<font size ='30' color='#DFE6E9'><big><b>" + fullSurname + "</font></b></big> &nbsp" + "<font color='#DFE6E9'>" + fullOtherName + "</font>";
+        clientName = "<font size ='30' color='#0000'><big><b>" + fullSurname + "</font></b></big> &nbsp" + "<font color='#0000'>" + fullOtherName + "</font>";
 
         ((TextView) findViewById(R.id.name)).setText(Html.fromHtml(clientName), TextView.BufferType.SPANNABLE);
         if (patient.getGender().equals("Female")) {
@@ -188,7 +190,6 @@ public class ClientProfileActivity extends AppCompatActivity {
         final TextView cancel_action;
         cancel_action = promptsView.findViewById(R.id.cancel_action);
         avarter = promptsView.findViewById(R.id.avarter);
-        serverUrl = getApplicationContext().getResources().getString(R.string.server_url);
         cancel_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,8 +205,9 @@ public class ClientProfileActivity extends AppCompatActivity {
 
         int age = 0;
         try {
-            age = DateUtil.getAge(new SimpleDateFormat("yyyy-MM-dd").parse(patient.getDateBirth()), new Date());
-        } catch (ParseException e) {
+            System.out.println("DATEBIRT " + patient.getDateBirth());
+            age = DateUtil.getAge(patient.getDateBirth());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println("NAME " + patient.getSurname());
@@ -226,6 +228,15 @@ public class ClientProfileActivity extends AppCompatActivity {
         ((TextView) promptsView.findViewById(R.id.address)).setText(Html.fromHtml("<font size ='30' color='#000'><big>" + "Address" + "</big></font> &nbsp &nbsp" + "<font ><small>" + patient.getAddress() + "</small></font>"));
 
         ((TextView) promptsView.findViewById(R.id.phone)).setText(Html.fromHtml("<font size ='30' color='#000'><big>" + "Phone" + "</big></font> &nbsp &nbsp" + "<font ><small>" + patient.getPhone() + "</small></font>"));
+        promptsView.findViewById(R.id.phone).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse("tel:" + patient.getPhone() ));
+                startActivity(callIntent);
+            }
+        });
+
         dialog.setCancelable(false);
         dialog.show();
     }
@@ -243,7 +254,6 @@ public class ClientProfileActivity extends AppCompatActivity {
         Button reminder = promptsView.findViewById(R.id.sendReminder);
         constraintLayout.setBackgroundResource(0);
         avarter = promptsView.findViewById(R.id.avarter);
-        serverUrl = getApplicationContext().getResources().getString(R.string.server_url);
         reminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -345,20 +355,6 @@ public class ClientProfileActivity extends AppCompatActivity {
         }
     }
 
-    public static void verifyStoragePermissions(Activity activity) {
-        // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
-        }
-    }
-
 
     @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
     public void showAlertDiscontinueService() {
@@ -372,8 +368,8 @@ public class ClientProfileActivity extends AppCompatActivity {
 
         Button save = promptsView.findViewById(R.id.save_button);
         avarter = promptsView.findViewById(R.id.avarter);
-        reasonDiscontinued = String.valueOf(((Spinner) promptsView.findViewById(R.id.reason_discontinued)).getSelectedItem());
-        serverUrl = getApplicationContext().getResources().getString(R.string.server_url);
+        reasonDiscontinued = promptsView.findViewById(R.id.reason_discontinued);
+
         cancel_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -400,15 +396,10 @@ public class ClientProfileActivity extends AppCompatActivity {
             @SuppressLint("SimpleDateFormat")
             @Override
             public void onClick(View view) {
-                try {
-                    dateDiscontinued = new SimpleDateFormat("yyyy-MM-dd").parse(dateDiscontinued1.getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
 
-                if (dateDiscontinued != null) {
-                    DDDDb.getInstance(ClientProfileActivity.this).devolveRepository().update1(patientId, dateDiscontinued, reasonDiscontinued);
-                    FancyToast.makeText(getApplicationContext(), "Client discontinued from service", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                if (!dateDiscontinued1.getText().toString().isEmpty() && !reasonDiscontinued.getSelectedItem().toString().isEmpty()) {
+                    DDDDb.getInstance(ClientProfileActivity.this).devolveRepository().update1(patient.getId(), dateDiscontinued1.getText().toString(), reasonDiscontinued.getSelectedItem().toString());
+                    discontinue(dateDiscontinued1.getText().toString(), reasonDiscontinued.getSelectedItem().toString(), patient.getId());
                     dialog.dismiss();
                 } else {
                     FancyToast.makeText(getApplicationContext(), "Please enter date discontinued from service", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
@@ -443,13 +434,52 @@ public class ClientProfileActivity extends AppCompatActivity {
     }
 
     private void updateDateOfNxetClinic() {
-        String myFormat = "yyyy-MM-dd"; //In which you need put here
+        String myFormat = "MM/dd/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         dateDiscontinued1.setText(sdf.format(myCalendar.getTime()));
 
     }
 
-}
 
+    private void discontinue(String dateDiscontinue, String reasonDiscontinued, Long id) {
+        ProgressDialog mPb = new ProgressDialog(ClientProfileActivity.this);
+        mPb.setProgress(0);
+        mPb.setMessage("Uploading data please wait...");
+        mPb.setCancelable(false);
+        mPb.setIndeterminate(false);
+        mPb.setProgress(0);
+        mPb.setMax(100);
+        mPb.show();
+        @SuppressLint("HardwareIds")
+
+        ClientAPI clientAPI = APIService.createService(ClientAPI.class);
+        Call<Response> objectCall = clientAPI.discontinued(dateDiscontinue, reasonDiscontinued, id);
+        objectCall.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(@NonNull Call<Response> call, @NonNull retrofit2.Response<Response> response) {
+                if (response.isSuccessful()) {
+                    mPb.hide();
+                    FancyToast.makeText(ClientProfileActivity.this, "Client discontinued from service", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                } else {
+                    mPb.hide();
+                    FancyToast.makeText(ClientProfileActivity.this, "System error contact administrator", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Response> call, @NonNull Throwable t) {
+                t.printStackTrace();
+                FancyToast.makeText(ClientProfileActivity.this, "No internet connection ", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                mPb.hide();
+            }
+
+        });
+
+
+    }
+}
 
 

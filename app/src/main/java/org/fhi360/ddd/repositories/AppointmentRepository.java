@@ -18,5 +18,5 @@ public interface AppointmentRepository {
     void update(Appointment appointment);
     //facilityId, patientId, dateTracked
     @Query("SELECT id FROM appointment WHERE    patient_id=:patientId and date_tracked=:dateTracked")
-    int getId(int patientId, Date dateTracked);
+    int getId(Long patientId, Date dateTracked);
 }

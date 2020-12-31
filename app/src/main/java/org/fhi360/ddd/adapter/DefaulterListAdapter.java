@@ -8,10 +8,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.fhi360.ddd.Db.DDDDb;
 import org.fhi360.ddd.R;
+import org.fhi360.ddd.domain.ARV;
 import org.fhi360.ddd.domain.Patient;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -57,19 +62,21 @@ public class DefaulterListAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = inflater.inflate(R.layout.defaulter_list_view, null);
-            holder.textFirst = (TextView) convertView.findViewById(R.id.name);
-            holder.textSecond = (TextView) convertView.findViewById(R.id.address);
-            holder.textThird = (TextView) convertView.findViewById(R.id.phone);
-            holder.missedVisit = (TextView) convertView.findViewById(R.id.dateText);
+            holder.textFirst = convertView.findViewById(R.id.name);
+            holder.textSecond = convertView.findViewById(R.id.address);
+            holder.textThird = convertView.findViewById(R.id.phone);
+            holder.missedVisit = convertView.findViewById(R.id.dateText);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        Patient patient = patients.get(position);
+        Patient arv = patients.get(position);
+        Patient patient = DDDDb.getInstance(activity).patientRepository().findByPatient(arv.getId());
         holder.textFirst.setText(patient.getSurname() + " " + patient.getOtherNames());
         holder.textSecond.setText(patient.getAddress());
         holder.textThird.setText(patient.getPhone());
-        holder.missedVisit.setText(patient.getDateLastViralLoad());
+
+        holder.missedVisit.setText((patient.getDateLastViralLoad()));
         return convertView;
     }
 

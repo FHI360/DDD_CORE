@@ -2,17 +2,11 @@
 package org.fhi360.ddd.adapter;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.CountDownTimer;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,20 +20,10 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.shashank.sony.fancytoastlib.FancyToast;
 
-import org.fhi360.ddd.Db.DDDDb;
-import org.fhi360.ddd.OutletHome;
-import org.fhi360.ddd.PatientList;
 import org.fhi360.ddd.R;
-import org.fhi360.ddd.ReportHomeOption;
 import org.fhi360.ddd.ReportingPeriod;
 import org.fhi360.ddd.ReportingPeriod1;
 import org.fhi360.ddd.domain.CardItem;
-import org.fhi360.ddd.domain.User;
-import org.fhi360.ddd.util.PrefManager;
-import org.fhi360.ddd.webservice.HttpGetRequest;
-import org.fhi360.ddd.webservice.HttpPostRequest;
-import org.fhi360.ddd.webservice.WebserviceResponseHandler;
-import org.fhi360.ddd.webservice.WebserviceResponseServerHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

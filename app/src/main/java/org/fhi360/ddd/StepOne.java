@@ -32,7 +32,7 @@ import static org.fhi360.ddd.util.Constants.PREFERENCES_ENCOUNTER;
 
 public class StepOne extends Fragment {
     private int id;
-    private int patientId;
+    private Long patientId;
     private Date dateVisit;
     private Patient patient;
     private boolean EDIT_MODE;
@@ -88,7 +88,7 @@ public class StepOne extends Fragment {
         EDIT_MODE = preferences.getBoolean("edit_mode", false);
         String json = preferences.getString("patient", "");
         patient = new Gson().fromJson(json, Patient.class);
-        patientId = patient.getPatientId();
+        patientId = patient.getId();
 
         id = preferences.getInt("id", 0);
         dateVisit = DateUtil.parseStringToDate(Objects.requireNonNull(preferences.getString("dateVisit", "")), "dd/MM/yyyy");   //dateVisit = DateUtil.unixTimestampToDate(preferences.getLong("dateVisit",  new Date().getTime())/1000L);

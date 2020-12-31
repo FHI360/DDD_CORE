@@ -2,17 +2,10 @@
 package org.fhi360.ddd.adapter;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.os.CountDownTimer;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,28 +19,16 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.shashank.sony.fancytoastlib.FancyToast;
 
+import org.fhi360.ddd.*;
 import org.fhi360.ddd.Db.DDDDb;
-import org.fhi360.ddd.FacilityHome;
-import org.fhi360.ddd.InventorySetup;
-import org.fhi360.ddd.OutletHome;
-import org.fhi360.ddd.PatientList;
-import org.fhi360.ddd.R;
-import org.fhi360.ddd.RegisterOutLet;
-import org.fhi360.ddd.ReportHomeOption;
-import org.fhi360.ddd.ReportHomeOptionFacility;
-import org.fhi360.ddd.ReportingPeriod;
-import org.fhi360.ddd.ReportingPeriod1;
 import org.fhi360.ddd.domain.CardItem;
+import org.fhi360.ddd.domain.Facility;
 import org.fhi360.ddd.domain.Patient;
-import org.fhi360.ddd.domain.Response;
-import org.fhi360.ddd.domain.User;
-import org.fhi360.ddd.util.PrefManager;
+import org.fhi360.ddd.dto.PatientDto;
+import org.fhi360.ddd.dto.PharmacyDto;
+import org.fhi360.ddd.dto.Response;
 import org.fhi360.ddd.webservice.APIService;
 import org.fhi360.ddd.webservice.ClientAPI;
-import org.fhi360.ddd.webservice.HttpGetRequest;
-import org.fhi360.ddd.webservice.HttpPostRequest;
-import org.fhi360.ddd.webservice.WebserviceResponseHandler;
-import org.fhi360.ddd.webservice.WebserviceResponseServerHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -125,10 +106,24 @@ public class FacilityCardPagerAdapter extends PagerAdapter implements CardAdapte
                 }
             });
         }
+
         if (position == 1) {
             assigined.setText("Click More");
+            imageView.setImageResource(R.drawable.firstvisit);
+            assigined.setBackgroundResource(R.drawable.background_button_accent);
+            assigined.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, PatientRegistrations.class);
+                    context.startActivity(intent);
+                }
+            });
+        }
+
+        if (position == 2) {
+            assigined.setText("Click More");
             imageView.setImageResource(R.drawable.inventorymgticon);
-            assigined.setBackgroundResource(R.drawable.background_button_accent1);
+            assigined.setBackgroundResource(R.drawable.background_button_accent);
             assigined.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -138,10 +133,10 @@ public class FacilityCardPagerAdapter extends PagerAdapter implements CardAdapte
             });
         }
 
-        if (position == 2) {
+        if (position == 3) {
             assigined.setText("Click More");
-            imageView.setImageResource(R.drawable.reporticon);
-            assigined.setBackgroundResource(R.drawable.background_button_accent2);
+          imageView.setImageResource(R.drawable.reporticon);
+            assigined.setBackgroundResource(R.drawable.background_button_accent);
             assigined.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -150,19 +145,18 @@ public class FacilityCardPagerAdapter extends PagerAdapter implements CardAdapte
                 }
             });
         }
-        if (position == 3) {
-            assigined.setText("Click More");
-            imageView.setImageResource(R.drawable.synchronizeicon);
-            assigined.setBackgroundResource(R.drawable.background_button_accent3);
-            assigined.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    List<Patient> patients = DDDDb.getInstance(context).patientRepository().findByAll();
-                    sync(patients);
-                }
-            });
-        }
-
+//        if (position == 3) {
+//            assigined.setText("Click More");
+//            imageView.setImageResource(R.drawable.synchronizeicon);
+//            assigined.setBackgroundResource(R.drawable.background_button_accent3);
+//            assigined.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                    sync();
+//                }
+//            });
+//        }
 
         cardView.setMaxCardElevation(mBaseElevation * MAX_ELEVATION_FACTOR);
         mViews.set(position, cardView);
@@ -176,38 +170,69 @@ public class FacilityCardPagerAdapter extends PagerAdapter implements CardAdapte
     }
 
 
-
-
     private void bind(CardItem item, View view) {
-        TextView titleTextView = (TextView) view.findViewById(R.id.titleTextView);
-        TextView contentTextView = (TextView) view.findViewById(R.id.contentTextView);
+        TextView titleTextView = view.findViewById(R.id.titleTextView);
+        TextView contentTextView = view.findViewById(R.id.contentTextView);
         titleTextView.setText(item.getTitle());
         contentTextView.setText(item.getText());
     }
 
-
-    private void sync(final List<Patient> patientList) {
+    private void sync() {
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("DDD outlet saving...");
+        progressDialog.setMessage("DDD Uploading...");
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(false);
         progressDialog.setMax(100);
         progressDialog.show();
+        List<Patient> patients = DDDDb.getInstance(context).patientRepository().findByAll();
+        List<PatientDto> patientDtos = new ArrayList<>();
+        for (Patient patient1 : patients) {
+            PatientDto patient = new PatientDto();
+            patient.setHospitalNum(patient1.getHospitalNum());
+            Facility facility = new Facility();
+            facility.setId(patient1.getFacilityId());
+            patient.setFacility(facility);
+            patient.setUniqueId(patient1.getUniqueId());
+            patient.setSurname(patient1.getSurname());
+            patient.setOtherNames(patient1.getOtherNames());
+            patient.setGender(patient1.getGender());
+            patient.setDateBirth(patient1.getDateBirth());
+            patient.setAddress(patient1.getAddress());
+            patient.setPhone(patient1.getPhone());
+            patient.setDateStarted(patient1.getDateStarted());
+            patient.setLastClinicStage(patient1.getLastClinicStage());
+            patient.setLastViralLoad(patient1.getLastViralLoad());
+            patient.setDateLastViralLoad(patient1.getDateLastViralLoad());
+            patient.setViralLoadDueDate(patient1.getViralLoadDueDate());
+            patient.setViralLoadType(patient1.getViralLoadType());
+            patient.setDateLastClinic(patient1.getDateLastClinic());
+            patient.setDateNextClinic(patient1.getDateNextClinic());
+            patient.setDateLastRefill(patient1.getDateLastRefill());
+            patient.setDateNextRefill(patient1.getDateNextRefill());
+            patient.setPharmacyId(patient1.getPharmacyId());
+            patientDtos.add(patient);
+        }
+
         ClientAPI clientAPI = APIService.createService(ClientAPI.class);
-        Call<Response> objectCall = clientAPI.sync(patientList);
+        Call<Response> objectCall = clientAPI.syncPatient(patientDtos);
         objectCall.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 if (response.isSuccessful()) {
-                    FancyToast.makeText(context, "A sincronização foi bem sucedida", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                    FancyToast.makeText(context, "Synchronization was successfully", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                    progressDialog.dismiss();
+                } else {
+                    FancyToast.makeText(context, "Syn was not successful contact System Administrator", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                     progressDialog.dismiss();
                 }
+
+
             }
 
             @Override
-            public void onFailure(Call<org.fhi360.ddd.domain.Response> call, Throwable t) {
+            public void onFailure(Call<Response> call, Throwable t) {
                 t.printStackTrace();
-                FancyToast.makeText(context, "Sem conexão com a Internet", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                FancyToast.makeText(context, "No Internet connection", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                 progressDialog.dismiss();
             }
 

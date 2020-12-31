@@ -1,14 +1,13 @@
 package org.fhi360.ddd.repositories;
 
-import android.database.Cursor;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import org.fhi360.ddd.domain.PreLoadRegimen;
 import org.fhi360.ddd.domain.Regimen;
-import org.fhi360.ddd.domain.User;
 
 import java.util.List;
 
@@ -18,20 +17,26 @@ public interface RegimenRepository {
     List<Regimen> findByAll();
 
     @Query("SELECT * FROM regimen where id = :id")
-    Regimen findByOne(int id);
+    Regimen findByOne(Long id);
 
-    @Query("SELECT * FROM regimen where regimentype = :regimentype")
-    Regimen getRegimenTypeId(String regimentype);
+    //    @Query("SELECT * FROM regimen where (regimen_type_id >= 1 AND regimen_type_id <= 4) OR regimen_type_id = 14")
+//    List<Regimen> getARV();
+//
+    // @Query("SELECT * FROM regimen where  id = 2005")
+    @Query("SELECT * FROM regimen where (regimen_type_id >= 1 AND regimen_type_id <= 4) OR regimen_type_id = 14 OR regimen_type_id = 2005 ")
+    List<Regimen> getARV();
 
-    @Query("SELECT regimen FROM regimen where (regimentype_id >= 1 AND regimentype_id <= 4) OR regimentype_id = 14")
-    List<String> getARV();
+    @Query("SELECT * FROM regimen where  id = 5000")
+    List<Regimen> getARV1();
+
+    @Query("SELECT * FROM regimen where id = 5000")
+    Regimen countRegiment();
 
 
-    @Query("SELECT regimen FROM regimen where regimentype_id = :regimentypeId")
-    List<String> getRegimens(int regimentypeId);
 
-    @Query("SELECT regimen FROM regimen where regimentype_id = 8")
-    List<String> getOtherMedicines();
+    @Query("SELECT * FROM regimen where regimen_type_id = :regimentypeId")
+    List<Regimen> getRegimens(Long regimentypeId);
+
 
     @Insert
     void save(Regimen regimen);
@@ -41,4 +46,9 @@ public interface RegimenRepository {
 
     @Update
     void update(Regimen regimen);
+
+    @Query("delete from regimen")
+    void delete();
+
+
 }

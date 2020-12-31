@@ -17,11 +17,11 @@ import lombok.NoArgsConstructor;
 public class Devolve implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    private int id;
+    private Long id;
     @ColumnInfo(name = "facility_id")
-    private int facilityId;
+    private Long facilityId;
     @ColumnInfo(name = "patient_id")
-    private int patientId;
+    private Long patientId;
     @ColumnInfo(name = "date_devolved")
     private Date dateDevolved;
     @ColumnInfo(name = "viral_load_assessed")
@@ -57,9 +57,10 @@ public class Devolve implements Serializable {
     @ColumnInfo(name = "note")
     private String notes;
     @ColumnInfo(name = "date_discontinued")
-    private Date dateDiscontinued;
+    private String dateDiscontinued;
     @ColumnInfo(name = "reason_discontinued")
     private String reasonDiscontinued;
+
 
 
 }

@@ -131,15 +131,15 @@ public class ServiceSummaryFacilityNational extends AppCompatActivity {
         try {
             List<Devolve> devolveList = DDDDb.getInstance(this).devolveRepository().findByAll();
             for (Devolve devolve : devolveList) {
-                int id = devolve.getId();
-                int patientId = devolve.getPatientId();
+                Long id = devolve.getId();
+                Long patientId = devolve.getPatientId();
                 //Get gender and date of birth of this patient
                 //Use the date of birth to determine age as at end of reporting month
                 Patient patient = DDDDb.getInstance(this).patientRepository().findByPatient(patientId);
                 String gender = patient.getGender() != null ? patient.getGender() : "";
                 @SuppressLint("SimpleDateFormat") Date dob = new SimpleDateFormat("dd-MM-yyyy").parse(patient.getDateBirth());
                 Date ref = DateUtil.getLastDateOfMonth(year, month);
-                int age = DateUtil.getAge(dob, ref);
+                int age = DateUtil.getAge(String.valueOf(dob));
 
                 Date dateDevolved = DateUtil.unixTimestampToDate(devolve.getDateDevolved().getTime(), "dd/MM/yyyy");
                 String viralLoadAssessed = devolve.getViralLoadAssessed();
@@ -157,7 +157,7 @@ public class ServiceSummaryFacilityNational extends AppCompatActivity {
                 Date dateLastClinic = DateUtil.unixTimestampToDate(devolve.getDateLastClinic().getTime(), "dd/MM/yyyy");
                 Date dateNextClinic = DateUtil.unixTimestampToDate(devolve.getDateNextClinic().getTime(), "dd/MM/yyyy");
                 String notes = devolve.getNotes();
-                Date dateDiscontinued = DateUtil.unixTimestampToDate(devolve.getDateDiscontinued().getTime(), "dd/MM/yyyy");
+                Date dateDiscontinued = DateUtil.unixTimestampToDate(Long.parseLong(devolve.getDateDiscontinued()), "dd/MM/yyyy");
                 String reasonDiscontinued = devolve.getReasonDiscontinued();
 
                 if (gender.equalsIgnoreCase("Male")) {
@@ -296,7 +296,7 @@ public class ServiceSummaryFacilityNational extends AppCompatActivity {
         }
     }
 
-    private boolean cotrim(int patientId, int month, int year) {
+    private boolean cotrim(Long patientId, int month, int year) {
         boolean found = false;
         System.out.println("patientId " + patientId);
         System.out.println("patientId " + month);
@@ -314,7 +314,7 @@ public class ServiceSummaryFacilityNational extends AppCompatActivity {
         return found;
     }
 
-    private boolean inh(int patientId, int month, int year) {
+    private boolean inh(Long patientId, int month, int year) {
         boolean found = false;
         try {
             found = DDDDb.getInstance(this).encounterRepository().findByCotrim(patientId, month, year);
@@ -329,7 +329,7 @@ public class ServiceSummaryFacilityNational extends AppCompatActivity {
         return found;
     }
 
-    private boolean chroniccare(int patientId, int month, int year) {
+    private boolean chroniccare(Long patientId, int month, int year) {
         boolean found = false;
         try {
 //            databaseHelper = DatabaseHelper.getInstance(context);
@@ -348,7 +348,7 @@ public class ServiceSummaryFacilityNational extends AppCompatActivity {
         return found;
     }
 
-    private boolean adhereissues(int patientId, int month, int year) {
+    private boolean adhereissues(Long patientId, int month, int year) {
         boolean found = false;
         try {
 //            databaseHelper = DatabaseHelper.getInstance(context);
@@ -367,7 +367,7 @@ public class ServiceSummaryFacilityNational extends AppCompatActivity {
         return found;
     }
 
-    private boolean adrs(int patientId, int month, int year) {
+    private boolean adrs(Long patientId, int month, int year) {
         boolean found = false;
         try {
 //            databaseHelper = DatabaseHelper.getInstance(context);
@@ -386,7 +386,7 @@ public class ServiceSummaryFacilityNational extends AppCompatActivity {
         return found;
     }
 
-    private boolean icsr(int patientId, int month, int year) {
+    private boolean icsr(Long patientId, int month, int year) {
         boolean found = false;
         try {
 //            databaseHelper = DatabaseHelper.getInstance(context);

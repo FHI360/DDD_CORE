@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,7 +16,7 @@
         android:id="@+id/back"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="50dp"
         android:src="@drawable/menu_icon" />
 
@@ -51,9 +52,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
+        android:layout_marginStart="150dp"
         android:layout_marginTop="300dp"
-        android:text="User Navigation"
+        android:text="@string/user_navigation"
         android:textColor="@color/bgcolor"
         android:textStyle="bold" />
 
@@ -82,7 +83,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="30dp"
                 android:background="#00000000"
-
                 android:src="@drawable/usericonblack"
                 android:tag="Dashboard" />
 
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="Client Profile"
+                android:text="@string/client_profile"
                 android:textColor="@color/bgcolor"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="Appointments"
+                android:text="@string/appointments"
                 android:textColor="@color/bgcolor"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="Discontinue Service"
+                android:text="@string/discontinue_service"
                 android:textColor="@color/bgcolor"
                 android:textStyle="bold" />
         </LinearLayout>

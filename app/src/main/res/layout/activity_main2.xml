@@ -104,16 +104,16 @@
 
 
 
-        <com.highsoft.highcharts.Core.HIChartView
-            android:id="@+id/linechart"
-            android:layout_width="match_parent"
-            android:layout_height="220dp" />
+<!--        <com.highsoft.highcharts.Core.HIChartView-->
+<!--            android:id="@+id/linechart"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="220dp" />-->
 
 
-        <com.highsoft.highcharts.Core.HIChartView
-            android:id="@+id/barchart"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+<!--        <com.highsoft.highcharts.Core.HIChartView-->
+<!--            android:id="@+id/barchart"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
 
 
 </LinearLayout>

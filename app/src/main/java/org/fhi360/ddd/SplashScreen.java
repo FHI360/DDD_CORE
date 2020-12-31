@@ -25,5 +25,6 @@ public class SplashScreen extends AppCompatActivity {
         }, TIMEOUT_MILLIS);
     }
 
+///api/ddd/mobile/pharmacy
 
 }

@@ -10,18 +10,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shashank.sony.fancytoastlib.FancyToast;
 
+import org.fhi360.ddd.Db.DDDDb;
 import org.fhi360.ddd.domain.Patient;
-import org.fhi360.ddd.domain.Response;
+import org.fhi360.ddd.dto.Response;
 import org.fhi360.ddd.webservice.APIService;
 import org.fhi360.ddd.webservice.ClientAPI;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,12 +39,19 @@ public class FacilityWelcome extends AppCompatActivity {
         setContentView(R.layout.facility_welcome);
         pharmacy = findViewById(R.id.pharmacy);
         next = findViewById(R.id.next);
-        HashMap<String, String> name = get();
-        String userName = name.get("name");
-        assert userName != null;
-        String firstLettersurname = String.valueOf(userName.charAt(0));
-        String fullSurname = firstLettersurname.toUpperCase() + userName.substring(1).toLowerCase();
-        pharmacy.setText(fullSurname);
+        HashMap<String, String> role = get();
+        String role1 = role.get("name");
+        if (role1 != null && role1.equals("admin")) {
+            String firstLettersurname = String.valueOf(role1.charAt(0));
+            String fullSurname = firstLettersurname.toUpperCase() + role1.substring(1).toLowerCase();
+            pharmacy.setText(fullSurname.toLowerCase());
+        } else {
+            String userName = DDDDb.getInstance(getApplicationContext()).userRepository().findByOne().getUsername();
+            String firstLettersurname = String.valueOf(userName.charAt(0));
+            String fullSurname = firstLettersurname.toUpperCase() + userName.substring(1).toLowerCase();
+            pharmacy.setText(fullSurname);
+        }
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,55 +59,7 @@ public class FacilityWelcome extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        LinearLayout registerDDDOutlet = findViewById(R.id.registerDDDOutlet);
-//        inventory = findViewById(R.id.inventory);
-//
-//        registerClient = findViewById(R.id.clientRegistration);
-//        summaryReport = findViewById(R.id.summaryReport);
-//        synchronize = findViewById(R.id.synchronize);
-//        HashMap<String, String> name = get();
-//        String userName = name.get("name");
-//        assert userName != null;
-//        Objects.requireNonNull(getSupportActionBar()).setTitle("Welcome, " + userName.toUpperCase());
-//        registerDDDOutlet.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(FacilityHome.this, RegisterOutLet.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        registerClient.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(FacilityHome.this, NewVisit.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        summaryReport.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(FacilityHome.this, ReportHomeOptionFacility.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        synchronize.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                List<Patient> patients = DDDDb.getInstance(getApplicationContext()).patientRepository().findByAll();
-//                sync(patients);
-//            }
-//        });
-//
-//        inventory.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(FacilityHome.this, InventorySetup.class);
-//                startActivity(intent);
-//            }
-//        });
+
     }
 
 
@@ -111,10 +71,10 @@ public class FacilityWelcome extends AppCompatActivity {
         progressdialog.setMax(100);
         progressdialog.show();
         ClientAPI clientAPI = APIService.createService(ClientAPI.class);
-        Call<Response> objectCall = clientAPI.sync(patientList);
+        Call<Response> objectCall = null;// clientAPI.(patientList);
         objectCall.enqueue(new Callback<Response>() {
             @Override
-            public void onResponse(Call<org.fhi360.ddd.domain.Response> call, retrofit2.Response<Response> response) {
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 if (response.isSuccessful()) {
                     FancyToast.makeText(getApplicationContext(), "Sync was successful", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
                     progressdialog.dismiss();
@@ -122,7 +82,7 @@ public class FacilityWelcome extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<org.fhi360.ddd.domain.Response> call, Throwable t) {
+            public void onFailure(Call<Response> call, Throwable t) {
                 t.printStackTrace();
                 FancyToast.makeText(getApplicationContext(), "No Internet Connection", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                 progressdialog.dismiss();

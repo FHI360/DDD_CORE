@@ -65,7 +65,7 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
         mFragmentCardShadowTransformer = new ShadowTransformer(mViewPager, mFragmentCardAdapter);
 
         mViewPager.setAdapter(mCardAdapter);
-        springDotsIndicator.setViewPager(mViewPager);
+       springDotsIndicator.setViewPager(mViewPager);
         mViewPager.setPageTransformer(false, mCardShadowTransformer);
         mViewPager.setOffscreenPageLimit(3);
     }

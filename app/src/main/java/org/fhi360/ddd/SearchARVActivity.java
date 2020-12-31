@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
@@ -14,6 +15,7 @@ import org.fhi360.ddd.Db.DDDDb;
 import org.fhi360.ddd.adapter.ARVListAdapter;
 import org.fhi360.ddd.domain.ARV;
 import org.fhi360.ddd.domain.Patient;
+import org.fhi360.ddd.domain.Regimen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +29,49 @@ public class SearchARVActivity extends AppCompatActivity {
     private List<ARV> encounters;
     private Patient patient;
     private SharedPreferences preferences;
+    TextView balance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_encounter);
+        balance = findViewById(R.id.totalBalance);
+
 
         this.preferences = getSharedPreferences(PREFERENCES_ENCOUNTER, 0);
         String json = preferences.getString("patient", "");
         patient = new Gson().fromJson(json, Patient.class);
-        int patientId = patient.getPatientId();
+        Long patientId = patient.getId();
 
         encounterListView = findViewById(R.id.encounterlistView);
+        double totalBalance = 0.0;
         encounters = DDDDb.getInstance(this).arvRefillRepository().findAll();
+        List<ARV> tDispense = DDDDb.getInstance(getApplicationContext()).arvRefillRepository().findAll1();
+        Regimen qtyInStock = DDDDb.getInstance(getApplicationContext()).regimenRepository().countRegiment();
+        double totalDispense = 0.0;
+
+        for(int i=0; i<tDispense.size(); i++){
+            System.out.println("answer" +tDispense.get(i).getDispensed1());
+            totalDispense = totalDispense+ Double.parseDouble(tDispense.get(i).getDispensed1());
+        }
+        //double d = (double)15552451L;
+        System.out.println("tDispense " + totalDispense);
+        System.out.println("qtyInStock " + (double)qtyInStock.getQuantity());
+        totalBalance = (double)qtyInStock.getQuantity() - totalDispense;
+//        if (qtyInStock >= tDispense) {
+//            totalBalance = (qtyInStock - tDispense);
+//        }
+
+//        for (ARV arv : encounters) {
+//            Regimen regimen = DDDDb.getInstance(getApplicationContext()).regimenRepository().findByOne(arv.getRegimen1());
+//            double qty = regimen.getQuantity();
+//            double qtyDispense = Double.parseDouble(arv.getDispensed1());
+//            totalBalance = qty - qtyDispense;
+//            if (totalBalance < 0) {
+//                totalBalance = 0.0;
+//            }
+//        }
+        balance.setText("Stock Balance  " + totalBalance);
         adapter = new ARVListAdapter(this, encounters);
         encounterListView.setAdapter(adapter);
 //        encounterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
